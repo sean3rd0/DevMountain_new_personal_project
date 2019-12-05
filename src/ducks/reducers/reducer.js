@@ -34,11 +34,19 @@ const initialState = {
 }
 
 const UPDATE_USER_ON_REDUX_STATE = "UPDATE_USER_ON_REDUX_STATE"
+const UPDATE_CURRENT_PAGE_ON_REDUX_STATE = "UPDATE_CURRENT_PAGE_ON_REDUX_STATE"
 
-export function updateUserOnReduxState(newUserObject){
+export function updateUserOnReduxState(updatedUserObject){
     return {
         type: UPDATE_USER_ON_REDUX_STATE, 
-        payload: newUserObject
+        payload: updatedUserObject
+    }
+}
+
+export function updateCurrentPageOnReduxState(updatedCurrentPage){
+    return {
+        type: UPDATE_CURRENT_PAGE_ON_REDUX_STATE, 
+        payload: updatedCurrentPage
     }
 }
 
@@ -56,6 +64,17 @@ export default function reducer (state = initialState, action){
                     lastname: payload.lastname, 
                     password: payload.password, 
                     profilePic: payload.profilePic
+                }
+            }
+
+        case UPDATE_CURRENT_PAGE_ON_REDUX_STATE: 
+            console.log('This is the payload: ', payload)
+            return {
+                ...state, 
+                currentPage: {
+                    pageId: payload.page_id, 
+                    personId: payload.person_id, 
+                    pageTitle: payload.page_title
                 }
             }
 

@@ -1,7 +1,7 @@
 import React from "react"
 import axios from "axios"
 import {connect} from "react-redux"
-import {updateUserOnReduxState} from "../../ducks/reducers/reducer" 
+import {updateUserOnReduxState, updateCurrentPageOnReduxState} from "../../ducks/reducers/reducer" 
 import budrLogoPink from "../../budrLogoPink.png"
 import style from "styled-components"
 
@@ -25,11 +25,25 @@ class Landing extends React.Component {
     handleCreate = (username, password, confirmPassword) => {
         axios.post(`/api/createAccount`, {username, password, confirmPassword})
         .then(response => {
-            this.props.updateUserOnReduxState(response.data)
+            this.setState({
+                usernameInput: "", 
+                passwordInput: "", 
+                confirmPasswordInput: ""
+            })
+            this.props.updateUserOnReduxState(response.data.user)
+            this.props.updateCurrentPageOnReduxState(response.data.usersFirstPage)
+            this.props.history.push(`/${response.data.user.username}/pages/${response.data.usersFirstPage.page_title}`)
         })
         .catch(err => {
+            this.setState({
+                usernameInput: "", 
+                passwordInput: "", 
+                confirmPasswordInput: ""
+            })
             console.log('This is the error that came instead of a response from the axios request in the handleCreate function on Landing.js: ', err)
         })
+
+
     }
 
     render(){
@@ -95,6 +109,7 @@ class Landing extends React.Component {
                             onChange={event => this.handleInputChange(event)}
                             name="usernameInput"
                             placeholder="JaneDoe1492"
+                            value={this.state.usernameInput}
                         />
                         <div>Username</div>
                     </div>
@@ -105,6 +120,7 @@ class Landing extends React.Component {
                             name="passwordInput"
                             placeholder="3x@mplPassw0rd"
                             type="password"
+                            value={this.state.passwordInput}
                         />
                         <div>Password</div>
                     </div>
@@ -115,6 +131,7 @@ class Landing extends React.Component {
                             name="confirmPasswordInput"
                             placeholder="3x@mplPassw0rd"
                             type="password"
+                            value={this.state.confirmPasswordInput}
                         />
                         <div>Confirm Password</div>
                     </div>
@@ -137,7 +154,8 @@ class Landing extends React.Component {
 }
 
 const mapDispatchToProps = {
-    updateUserOnReduxState: updateUserOnReduxState
+    updateUserOnReduxState: updateUserOnReduxState, 
+    updateCurrentPageOnReduxState: updateCurrentPageOnReduxState
 }
 
 export default connect(null, mapDispatchToProps)(Landing)

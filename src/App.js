@@ -3,7 +3,6 @@ import {HashRouter} from "react-router-dom"
 import routes from "./routes"
 import {Provider} from "react-redux"
 import store from "./ducks/store"
-import budrLogoPink from './budrLogoPink.png';
 import './App.css';
 
 function App() {
