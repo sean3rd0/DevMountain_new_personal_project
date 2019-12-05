@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background-color: #2f3c7e;
+  color: #fbeaeb;
+  min-height: 100vh; 
 }
 
 .App-logo {
@@ -19,4 +22,50 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.flex-it {
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-bottom: 15px; 
+}
+
+.bottom-margin {
+  margin-bottom: 15px; 
+}
+
+input {
+  width: 200px;
+  background-color: rgb(34, 34, 34);
+  color: #fbeaeb;
+  border: 2px solid #505050;
+}
+
+button {
+  background-color: rgb(34, 34, 34);
+  color: #fbeaeb;
+  border: 2px solid #505050;
+  width: 80px; 
+  height: 26px; 
+  border-radius: 8px; 
+}
+
+.landing-component-budr-logo {
+  padding-left: 2%; ;
+}
+
+@media(max-width: 450px){
+  .mobile-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .landing-component-budr-logo {
+    padding-left: 4%; ;
+  }
 }
