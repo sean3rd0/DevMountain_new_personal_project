@@ -24,6 +24,10 @@
   color: #09d3ac;
 }
 
+.link-like-blue-div {
+  color: rgb(0, 132, 255);
+}
+
 .flex-it {
   display: flex; 
   flex-direction: column;
@@ -33,28 +37,72 @@
   padding-bottom: 15px; 
 }
 
+.row {
+  display: flex; 
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 15px 30px; 
+}
+
 .bottom-margin {
   margin-bottom: 15px; 
 }
 
-input {
-  width: 200px;
+input, button, textarea {
   background-color: rgb(34, 34, 34);
   color: #fbeaeb;
   border: 2px solid #505050;
 }
 
-button {
-  background-color: rgb(34, 34, 34);
+input, textarea {
+  width: 200px;
+}
+
+.plain-text {
   color: #fbeaeb;
-  border: 2px solid #505050;
+}
+
+nav {
+  /* background: #202955; */
+}
+
+.zOne {
+  z-index: 1;
+}
+
+textarea {
+  height: 52px; 
+  border-radius: 6px;
+}
+
+button {
   width: 80px; 
   height: 26px; 
   border-radius: 8px; 
 }
 
+.post-template-button-row {
+  display: flex; 
+  justify-content: space-between;
+  width: 210px; 
+}
+
+.post-button {
+  float: right; 
+  margin-top: 35px; 
+}
+
+.profile-pic {
+  /* background-color: gray;  */
+  width: 60px; 
+  height: 60px; 
+  border-radius: 50%;
+}
+
 .landing-component-budr-logo {
-  padding-left: 2%; ;
+  padding-left: 2%;
 }
 
 @media(max-width: 450px){

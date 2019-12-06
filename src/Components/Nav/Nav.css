@@ -1,0 +1,26 @@
+.hamburger-menu {
+    display: none; 
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 28px;
+    height: 35px;
+    width: 50px;
+    border-radius: 5px;
+} 
+
+.hide-dropdown {
+    display: none;
+}
+
+.show-left-dropdown {
+}
+
+.show-right-dropdown {
+}
+
+@media (max-width: 450px) {
+    .hamburger-menu {
+        display: flex;
+    }
+}

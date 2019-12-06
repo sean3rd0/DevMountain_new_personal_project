@@ -35,6 +35,8 @@ const initialState = {
 
 const UPDATE_USER_ON_REDUX_STATE = "UPDATE_USER_ON_REDUX_STATE"
 const UPDATE_CURRENT_PAGE_ON_REDUX_STATE = "UPDATE_CURRENT_PAGE_ON_REDUX_STATE"
+const UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE = "UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE"
+const ADD_NEW_POST = "ADD_NEW_POST"
 
 export function updateUserOnReduxState(updatedUserObject){
     return {
@@ -50,6 +52,20 @@ export function updateCurrentPageOnReduxState(updatedCurrentPage){
     }
 }
 
+export function updatePostsOnCurrentPageOnReduxState(postsOnCurrentPage){
+    return {
+        type: UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE, 
+        payload: postsOnCurrentPage
+    }
+}
+
+export function addNewPost(newPost){
+    return {
+        type: ADD_NEW_POST, 
+        payload: newPost
+    }
+}
+
 export default function reducer (state = initialState, action){
     const {type, payload} = action
     switch(type){
@@ -57,18 +73,17 @@ export default function reducer (state = initialState, action){
             return {
                 ...state, 
                 user: {
-                    personId: payload.personId,
+                    personId: payload.person_id,
                     email: payload.email, 
                     username: payload.username, 
                     firstname: payload.firstname, 
                     lastname: payload.lastname, 
                     password: payload.password, 
-                    profilePic: payload.profilePic
+                    profilePic: payload.profile_pic
                 }
             }
 
-        case UPDATE_CURRENT_PAGE_ON_REDUX_STATE: 
-            console.log('This is the payload: ', payload)
+        case UPDATE_CURRENT_PAGE_ON_REDUX_STATE:
             return {
                 ...state, 
                 currentPage: {
@@ -76,6 +91,29 @@ export default function reducer (state = initialState, action){
                     personId: payload.person_id, 
                     pageTitle: payload.page_title
                 }
+            }
+
+        case UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE: 
+            return {
+                ...state, 
+                postsOnCurrentPage: [
+                    ...payload
+                ]
+            }
+
+        case ADD_NEW_POST: 
+            return {
+                ...state, 
+                postsOnCurrentPage: [
+                    {
+                        postId: payload.post_id, 
+                        personId: payload.person_id, 
+                        pageId: payload.page_id, 
+                        postText: payload.post_text, 
+                        postPhoto: payload.post_photo
+                    }, 
+                    ...state.postsOnCurrentPage
+                ]
             }
 
         default: 

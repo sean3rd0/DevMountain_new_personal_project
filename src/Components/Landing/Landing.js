@@ -3,7 +3,6 @@ import axios from "axios"
 import {connect} from "react-redux"
 import {updateUserOnReduxState, updateCurrentPageOnReduxState} from "../../ducks/reducers/reducer" 
 import budrLogoPink from "../../budrLogoPink.png"
-import style from "styled-components"
 
 class Landing extends React.Component {
     constructor(props){
@@ -30,9 +29,9 @@ class Landing extends React.Component {
                 passwordInput: "", 
                 confirmPasswordInput: ""
             })
-            this.props.updateUserOnReduxState(response.data.user)
-            this.props.updateCurrentPageOnReduxState(response.data.usersFirstPage)
-            this.props.history.push(`/${response.data.user.username}/pages/${response.data.usersFirstPage.page_title}`)
+            // this.props.updateUserOnReduxState(response.data.user)
+            // this.props.updateCurrentPageOnReduxState(response.data.usersFirstPage)
+            this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.usersFirstPage.page_id}`)
         })
         .catch(err => {
             this.setState({
@@ -47,10 +46,6 @@ class Landing extends React.Component {
     }
 
     render(){
-        console.log('This is the inputs: ', this.state.usernameInput, this.state.passwordInput, this.state.confirmPasswordInput)
-        const LinklikeBluediv = style.div`
-            color: rgb(0, 132, 255);
-        `
         if (!this.state.createAccount){
             return(
                 <div className="landing-component-wrapping-div">
@@ -87,9 +82,10 @@ class Landing extends React.Component {
                     </div>
                     <div className="mobile-flex">
                         <div>Haven't made an account yet? </div>
-                        <LinklikeBluediv
+                        <div
+                            className="link-like-blue-div"
                             onClick={() => {this.setState({createAccount: true})}}
-                        >Create Account!</LinklikeBluediv>
+                        >Create Account!</div>
                     </div>
                 </div>
             )
@@ -143,9 +139,10 @@ class Landing extends React.Component {
                     </div>
                     <div className="mobile-flex">
                         <div>Already have an account? </div>
-                        <LinklikeBluediv
+                        <div
+                            className="link-like-blue-div"
                             onClick={() => {this.setState({createAccount: false})}}
-                        >Login!</LinklikeBluediv>
+                        >Login!</div>
                     </div>
                 </div>
             )

@@ -13,7 +13,7 @@ app.use(session({
     saveUninitialized: false, 
     secret: SESSION_SECRET, 
     cookie: {
-        maxAge: 1000 * 60 * 60
+        maxAge: 1000 * 60 * 60 * 24
         /*One hour*/
     }
 }))
@@ -24,6 +24,10 @@ massive(CONNECTION_STRING).then(db => {
 })
 
 app.post('/api/createAccount', authCtrl.createAccount)
+
+app.post('/api/posts', mainCtrl.submitPost)
+app.get('/api/personid/:personid', mainCtrl.getCurrentUser)
+app.get('/api/pageid/:pageid', mainCtrl.getCurrentPage)
 
 app.listen(SERVER_PORT, () => {
     console.log(`Listening on Port ${SERVER_PORT}`)
