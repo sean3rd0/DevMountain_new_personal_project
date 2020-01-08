@@ -49,11 +49,31 @@ class ProfilePage extends React.Component {
         })
     }
 
+    handleFriendsButtonClick = () => {
+        console.log('friends clicked')
+    }
+
+    handleFeedButtonClick = () => {
+        console.log('feed clicked')
+    }
+
+    handleSettingsButtonClick = () => {
+        console.log('settings clicked')
+    }
+
+    handleLogoutButtonClick = () => {
+        console.log('logout clicked')
+    }
+
     render(){
         return (
             <div>
                 <Nav 
                     user={this.props.user}
+                    handleFriendsButtonClick={this.handleFriendsButtonClick}
+                    handleFeedButtonClick={this.handleFeedButtonClick}
+                    handleSettingsButtonClick={this.handleSettingsButtonClick}
+                    handleLogoutButtonClick={this.handleLogoutButtonClick}
                 />
                 <UserDisplay 
                     profilePic={this.props.user.profilePic}
