@@ -41,8 +41,28 @@ class Landing extends React.Component {
             })
             console.log('This is the error that came instead of a response from the axios request in the handleCreate function on Landing.js: ', err)
         })
+    }
 
-
+    handleLogin = (username, password) => {
+        axios.post(`/api/login`, {username, password})
+        .then(response => {
+            this.setState({
+                usernameInput: "", 
+                passwordInput: "", 
+                confirmPasswordInput: ""
+            })
+            console.log(`this is the handleLogin's response.data: `, response.data)
+            this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.usersFirstPage.page_id}`)
+            console.log(`this is the handleLogin's response.data: `, response.data)
+        })
+        .catch(err => {
+            this.setState({
+                usernameInput: "", 
+                passwordInput: "", 
+                confirmPasswordInput: ""
+            })
+            console.log('This is the error that came instead of a response from the axios request in the handleCreate function on Landing.js: ', err)
+        })
     }
 
     render(){
@@ -77,7 +97,8 @@ class Landing extends React.Component {
                     </div>
                     <div>
                         <button 
-                            className="bottom-margin"
+                            className="bottom-margin" 
+                            onClick={() => this.handleLogin(this.state.usernameInput, this.state.passwordInput)}
                         >Login</button>
                     </div>
                     <div className="mobile-flex">

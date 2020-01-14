@@ -24,6 +24,7 @@ massive(CONNECTION_STRING).then(db => {
 })
 
 app.post('/api/createAccount', authCtrl.createAccount)
+app.post('/api/login', authCtrl.login)
 
 app.post('/api/posts', mainCtrl.submitPost)
 app.get('/api/personid/:personid', mainCtrl.getCurrentUser)

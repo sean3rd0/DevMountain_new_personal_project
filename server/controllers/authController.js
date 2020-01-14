@@ -5,10 +5,10 @@ module.exports = {
         let db = req.app.get('db')
         let {username, password, confirmPassword} = req.body
 
-        let username_already_exists = await db.check_username({username})
-        username_already_exists = username_already_exists[0]
+        let usernameAlreadyExists = await db.check_username({username})
+        usernameAlreadyExists = usernameAlreadyExists[0]
 
-        if (username_already_exists) {
+        if (usernameAlreadyExists) {
             res.status(409).send("Someone is already using this username. If it's you, click login instead :)")
         } else {
             if (password = confirmPassword) {
@@ -30,7 +30,34 @@ module.exports = {
 
                 res.status(200).send({user, usersFirstPage})
             } else {
-                res.status(401).send(`The passwords didn't match; please type them in again.`)
+                res.status(401).send(`The passwords didn't match; please type them in again. `)
+            }
+        }
+    }, 
+
+    login: async (req, res) => {
+        let db = req.app.get('db')
+        let {username, password} = req.body
+        
+        let usernameAlreadyExists = await db.check_username({username})
+        usernameAlreadyExists = usernameAlreadyExists[0] 
+        // usernameAlreadyExists should now be an object, like this: { username: 'yellow' }
+
+        if(!usernameAlreadyExists){
+            res.status(401).send(`There is no profile with this username. `)
+        } else {
+            let userCredentials = await db.get_user_credentials({username}) 
+            userCredentials = userCredentials[0]
+            console.log('this is userCredentials[0]: ', userCredentials)
+
+            const authenticated = bcrypt.compareSync(password, userCredentials.password) 
+
+            if (authenticated) {
+                delete userCredentials.password 
+                req.session.user = userCredentials //see other budr authCtrl login code... you also responde with the user's landing page...
+                res.status(200).send(req.session.user)
+            } else {
+                res.status(401).send(`Password is incorrect. `)
             }
         }
     }
