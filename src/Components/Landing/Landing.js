@@ -53,6 +53,7 @@ class Landing extends React.Component {
             })
             console.log(`this is the handleLogin's response.data: `, response.data)
             this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.usersFirstPage.page_id}`)
+            //this^ is not working because there is just one object being sent in the response, not an object with both a user object and a usersFirstPage object inside of that object. Spread a usersFirstPage object into that object too (see first budr site's code)? Or maybe just don't send it back with this response and do some sort of page thing somewhere else in the code? Idk. 
             console.log(`this is the handleLogin's response.data: `, response.data)
         })
         .catch(err => {
@@ -61,7 +62,7 @@ class Landing extends React.Component {
                 passwordInput: "", 
                 confirmPasswordInput: ""
             })
-            console.log('This is the error that came instead of a response from the axios request in the handleCreate function on Landing.js: ', err)
+            console.log('This is the error that came instead of a response from the axios request in the handleLogin function on Landing.js: ', err)
         })
     }
 

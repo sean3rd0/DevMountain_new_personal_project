@@ -48,12 +48,18 @@ module.exports = {
         } else {
             let userCredentials = await db.get_user_credentials({username}) 
             userCredentials = userCredentials[0]
-            console.log('this is userCredentials[0]: ', userCredentials)
 
             const authenticated = bcrypt.compareSync(password, userCredentials.password) 
 
             if (authenticated) {
                 delete userCredentials.password 
+
+                let landingPageInfo = await db.get_landing_page({username})
+                console.log('this is username: ', username)
+                console.log('this is landingPageInfo before at index 0: ', landingPageInfo)
+                landingPageInfo = landingPageInfo[0]
+                console.log('this is landingPageInfo after at index 0: ', landingPageInfo)
+
                 req.session.user = userCredentials //see other budr authCtrl login code... you also responde with the user's landing page...
                 res.status(200).send(req.session.user)
             } else {
