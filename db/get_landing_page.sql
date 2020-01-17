@@ -24,6 +24,7 @@
 
 SELECT 
     pages.page_title, 
+    pages.page_id,
     posts.post_id, 
     posts.person_id, 
     posts.post_text, 
