@@ -55,7 +55,6 @@ module.exports = {
                 delete userCredentials.password 
 
                 let landingPageInfo = await db.get_landing_page({username})
-                console.log('this is landingPageInfo before at index 0: ', landingPageInfo)
 
                 req.session.user = userCredentials //see other budr authCtrl login code... you also responde with the user's landing page... 
                 req.session.landingPage = landingPageInfo

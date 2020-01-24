@@ -1,9 +1,10 @@
 import React from "react"
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom" 
+import "./UserDisplay.css"
 
 const UserDisplay = (props) => {
     return (
-        <div>
+        <div className="userDisplayWrappingDiv">
             <div>
                 <img 
                     className="profile-pic" 
@@ -14,9 +15,11 @@ const UserDisplay = (props) => {
             </div>
             <div>
                 <div 
+                    className="UserDisplayInnerParts"
                     onClick={() => {props.handleUserDisplayClick(props.personId)}}
                 >{props.firstname} {props.lastname}</div>
-                <div
+                <div 
+                    className="UserDisplayInnerParts"
                     onClick={() => {props.handleUserDisplayClick(props.personId)}}
                 >{props.username}</div>
             </div>

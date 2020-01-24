@@ -28,7 +28,7 @@ app.post('/api/login', authCtrl.login)
 
 app.post('/api/posts', mainCtrl.submitPost)
 app.get('/api/personid/:personid', mainCtrl.getCurrentUser)
-app.get('/api/pageid/:pageid', mainCtrl.getCurrentPage)
+app.get('/api/personid/:personid/pageid/:pageid', mainCtrl.getCurrentPage)
 
 app.listen(SERVER_PORT, () => {
     console.log(`Listening on Port ${SERVER_PORT}`)

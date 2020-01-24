@@ -83,7 +83,8 @@ export default function reducer (state = initialState, action){
                 }
             }
 
-        case UPDATE_CURRENT_PAGE_ON_REDUX_STATE:
+        case UPDATE_CURRENT_PAGE_ON_REDUX_STATE: 
+        console.log('this is the payload for reducer.UPDATE_CURRENT_PAGE...: ', payload)
             return {
                 ...state, 
                 currentPage: {
@@ -94,6 +95,7 @@ export default function reducer (state = initialState, action){
             }
 
         case UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE: 
+        console.log('this is the payload for reducer.UPDATE_POSTS_ON_CURRENT...: ', payload)
             return {
                 ...state, 
                 postsOnCurrentPage: [

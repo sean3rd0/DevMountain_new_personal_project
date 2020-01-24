@@ -105,7 +105,8 @@ class Nav extends React.Component {
             display: flex; 
             align-items: center;
             justify-content: space-between; 
-            padding: 0 2.5vw;
+            padding: 0 2.5vw; 
+            margin: 0 0 20px; 
         ` 
         const ProfilePicAndMenu = styled.div`
             display: flex; 

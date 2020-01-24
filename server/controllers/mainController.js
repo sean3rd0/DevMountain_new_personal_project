@@ -21,9 +21,9 @@ module.exports = {
 
     getCurrentPage: async (req, res) => {
         const db = req.app.get('db')
-        const {pageid} = req.params
+        const {personid, pageid} = req.params
         
-        let currentPageAndItsTenMostRecentPosts = await db.get_current_page({pageId: pageid})
+        let currentPageAndItsTenMostRecentPosts = await db.get_current_page({personId: personid})
         console.log('this is currentPageAndItsTenMostRecentPosts BEFORE getting it at index 0: ', currentPageAndItsTenMostRecentPosts)
         
         res.status(200).send(currentPageAndItsTenMostRecentPosts)

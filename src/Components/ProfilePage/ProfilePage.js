@@ -5,6 +5,7 @@ import {updateUserOnReduxState, updateCurrentPageOnReduxState, updatePostsOnCurr
 import Nav from "../Nav/Nav"
 import UserDisplay from "../UserDisplay/UserDisplay"
 import PostTemplate from "../PostTemplate/PostTemplate"
+import "./ProfilePage.css"
 
 class ProfilePage extends React.Component {
     constructor(props) {
@@ -19,10 +20,10 @@ class ProfilePage extends React.Component {
         axios.get(`/api/personid/${this.props.match.params.personid}`)
         .then(response => {
             this.props.updateUserOnReduxState(response.data)
-            axios.get(`/api/pageid/${this.props.match.params.pageid}`)
+            axios.get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
             .then(response => {
-                this.props.updateCurrentPageOnReduxState(response.data)
-                this.props.updatePostsOnCurrentPageOnReduxState(response.data)
+                this.props.updateCurrentPageOnReduxState(response.data[0]/*is there more that I need to specify than just response.data? like response.data.blahblahblah?*/)
+                this.props.updatePostsOnCurrentPageOnReduxState(response.data/*is there more that I need to specify than just response.data? like response.data.blahblahblah?*/)
             })
             .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)})
         })
@@ -66,8 +67,33 @@ class ProfilePage extends React.Component {
     }
 
     render(){
+        //this.props.currentPage is not needed while I'm just experimenting with this little project. 
+        let arrayOfDisplayedPosts = this.props.postsOnCurrentPage.map((individualPostObject, indexOfIndividualPostObject) => {
+            return (
+                <div className="ProfilePageIndividualPostWrappingDiv">
+                    <div className="individualPost-UserDisplay">
+                    <UserDisplay 
+                        profilePic={this.props.user.profilePic}
+                        firstname={this.props.user.firstname}
+                        lastname={this.props.user.lastname}
+                        username={this.props.user.username}
+                        personId={this.props.user.personId}
+                    />
+                    </div>
+                    <div className="individualPost-photo-and-text-div">
+                        <div className="individualPost-post-text-div">
+                            {individualPostObject.post_text}
+                        </div>
+                        <img 
+                            src={individualPostObject.post_photo}
+                            alt="a photo related to this post"
+                        />
+                    </div>
+                </div>
+            )
+        })
         return (
-            <div>
+            <div className="yellowww">
                 <Nav 
                     user={this.props.user}
                     handleFriendsButtonClick={this.handleFriendsButtonClick}
@@ -85,6 +111,8 @@ class ProfilePage extends React.Component {
                 <PostTemplate 
                     handlePostSubmit={this.handlePostSubmit}
                 />
+                {arrayOfDisplayedPosts}
+                <div className="yellowww">hellowwwww</div>
             </div>
         )
     }
