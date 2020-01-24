@@ -50,21 +50,22 @@ class ProfilePage extends React.Component {
         })
     }
 
-    handleFriendsButtonClick = () => {
-        console.log('friends clicked')
-    }
+    // handleFriendsButtonClick = () => {
+    //     console.log('friends clicked')
+    // }
 
-    handleFeedButtonClick = () => {
-        console.log('feed clicked')
-    }
+    // handleFeedButtonClick = () => {
+    //     // this.props.history.push('/')
+    //     console.log('feed clicked')
+    // }
 
-    handleSettingsButtonClick = () => {
-        console.log('settings clicked')
-    }
+    // handleSettingsButtonClick = () => {
+    //     console.log('settings clicked')
+    // }
 
-    handleLogoutButtonClick = () => {
-        console.log('logout clicked')
-    }
+    // handleLogoutButtonClick = () => {
+    //     console.log('logout clicked')
+    // }
 
     render(){
         //this.props.currentPage is not needed while I'm just experimenting with this little project. 
@@ -95,11 +96,12 @@ class ProfilePage extends React.Component {
         return (
             <div className="yellowww">
                 <Nav 
-                    user={this.props.user}
-                    handleFriendsButtonClick={this.handleFriendsButtonClick}
-                    handleFeedButtonClick={this.handleFeedButtonClick}
-                    handleSettingsButtonClick={this.handleSettingsButtonClick}
-                    handleLogoutButtonClick={this.handleLogoutButtonClick}
+                    history={this.props.history}
+                    // user={this.props.user}
+                    // handleFriendsButtonClick={this.handleFriendsButtonClick}
+                    // handleFeedButtonClick={this.handleFeedButtonClick}
+                    // handleSettingsButtonClick={this.handleSettingsButtonClick}
+                    // handleLogoutButtonClick={this.handleLogoutButtonClick}
                 />
                 <UserDisplay 
                     profilePic={this.props.user.profilePic}

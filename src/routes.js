@@ -8,6 +8,6 @@ export default (
     <Switch>
         <Route exact path="/" component={Landing} />
         <Route path="/:personid/pages/:pageid" component={ProfilePage} />
-        <Route path="/feed" component={Feed} />
+        <Route path="/:personid/feed" component={Feed} />
     </Switch>
 )

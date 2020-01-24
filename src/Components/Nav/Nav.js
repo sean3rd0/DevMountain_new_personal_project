@@ -98,6 +98,23 @@ class Nav extends React.Component {
         console.log('this is this.state.showRightMenu: ', this.state.showRightMenu)
     }
 
+    handleFriendsButtonClick = () => {
+        console.log('friends clicked')
+    }
+
+    handleFeedButtonClick = () => {
+        this.props.history.push(`/${this.props.user.person_id}/feed`)
+    }
+
+    handleSettingsButtonClick = () => {
+        console.log('settings clicked')
+    }
+
+    handleLogoutButtonClick = () => {
+        console.log('logout clicked')
+    }
+
+
     render(){
         const NavComponent = styled.div`
             background: #263169;
@@ -134,8 +151,8 @@ class Nav extends React.Component {
         return(
             <NavComponent className="Nav-component-wrapping-div">
                 <div className="navbar-menu">
-                        <button className="navbar-buttons" onClick={this.props.handleFriendsButtonClick}>Friends</button>
-                        <button className="navbar-buttons" onClick={this.props.handleFeedButtonClick}>Feed</button>
+                        <button className="navbar-buttons" onClick={this.handleFriendsButtonClick}>Friends</button>
+                        <button className="navbar-buttons" onClick={this.handleFeedButtonClick}>Feed</button>
                 </div>
                 <div className="navbar-icon" onClick={this.leftMenuToggle}>
                     &#9776;
@@ -146,8 +163,8 @@ class Nav extends React.Component {
                     : 
                     'left-menu menu'
                 }>
-                    <button onClick={this.props.handleFriendsButtonClick}>Friends</button>
-                    <button onClick={this.props.handleFeedButtonClick}>Feed</button>
+                    <button onClick={this.handleFriendsButtonClick}>Friends</button>
+                    <button onClick={this.handleFeedButtonClick}>Feed</button>
                 </div>
                 <ProfilePicAndMenu>
                     <NavProfilePictureSide className="Nav-component-profile-pic-container">
@@ -159,8 +176,8 @@ class Nav extends React.Component {
                         />
                     </NavProfilePictureSide>
                     <div className="navbar-menu">
-                        <button className="navbar-buttons" onClick={this.props.handleSettingsButtonClick}>Settings</button>
-                        <button className="navbar-buttons" onClick={this.props.handleLogoutButtonClick}>Logout</button>
+                        <button className="navbar-buttons" onClick={this.handleSettingsButtonClick}>Settings</button>
+                        <button className="navbar-buttons" onClick={this.handleLogoutButtonClick}>Logout</button>
                     </div>
                     <div className="navbar-icon" onClick={this.rightMenuToggle}>
                         &#9776;
@@ -171,8 +188,8 @@ class Nav extends React.Component {
                         : 
                         'right-menu menu'
                     }>
-                        <button onClick={this.props.handleSettingsButtonClick}>Settings</button>
-                        <button onClick={this.props.handleLogoutButtonClick}>Logout</button>
+                        <button onClick={this.handleSettingsButtonClick}>Settings</button>
+                        <button onClick={this.handleLogoutButtonClick}>Logout</button>
                     </div>       
                 </ProfilePicAndMenu>
             </NavComponent>
@@ -182,6 +199,7 @@ class Nav extends React.Component {
 
 const mapStateToProps = (reduxState) => {
     return {
+        user: reduxState.reducer.user, 
         profilePic: reduxState.reducer.user.profilePic
     }
 }
