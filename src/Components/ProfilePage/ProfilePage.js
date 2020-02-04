@@ -74,6 +74,7 @@ class ProfilePage extends React.Component {
                 <div className="ProfilePageIndividualPostWrappingDiv">
                     <div className="individualPost-UserDisplay">
                     <UserDisplay 
+                        key={indexOfIndividualPostObject}
                         profilePic={this.props.user.profilePic}
                         firstname={this.props.user.firstname}
                         lastname={this.props.user.lastname}
@@ -82,12 +83,18 @@ class ProfilePage extends React.Component {
                     />
                     </div>
                     <div className="individualPost-photo-and-text-div">
-                        <div className="individualPost-post-text-div">
+                        <div 
+                            className="individualPost-post-text-div"
+                            width="350px"
+                            height="250px"
+                        >
                             {individualPostObject.post_text}
                         </div>
                         <img 
                             src={individualPostObject.post_photo}
                             alt="a photo related to this post"
+                            width="350px"
+                            height="250px"
                         />
                     </div>
                 </div>

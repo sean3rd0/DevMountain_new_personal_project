@@ -1,9 +1,9 @@
 import React from "react"
 import Nav from "../Nav/Nav"
 
-class Feed extends React.Component {
-    constructor(props){
-        super(props)
+class Settings extends React.Component {
+    constructor(){
+        super()
     }
 
     render(){
@@ -12,10 +12,10 @@ class Feed extends React.Component {
                 <Nav 
                     history={this.props.history}
                 />
-                Feed
+                Settings
             </div>
         )
     }
 }
 
-export default Feed
+export default Settings

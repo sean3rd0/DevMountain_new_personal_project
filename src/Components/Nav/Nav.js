@@ -99,7 +99,7 @@ class Nav extends React.Component {
     }
 
     handleFriendsButtonClick = () => {
-        console.log('friends clicked')
+        this.props.history.push(`/${this.props.user.person_id}/friends`)
     }
 
     handleFeedButtonClick = () => {
@@ -107,11 +107,14 @@ class Nav extends React.Component {
     }
 
     handleSettingsButtonClick = () => {
-        console.log('settings clicked')
+        this.props.history.push(`/${this.props.user.person_id}/settings`)
     }
 
     handleLogoutButtonClick = () => {
-        console.log('logout clicked')
+        axios.post('/api/logout')
+        .then(
+            this.props.history.push('/')
+        )
     }
 
 

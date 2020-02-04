@@ -25,6 +25,8 @@ module.exports = {
                 usersFirstPage = usersFirstPage[0]
 
                 req.session.user = {...newlyCreatedAccount}
+                req.session.landingPage = usersFirstPage
+                console.log('req.session.landingPage: ', req.session.landingPage)
 
                 const {user} = req.session
 
@@ -63,5 +65,10 @@ module.exports = {
                 res.status(401).send(`Password is incorrect. `)
             }
         }
+    }, 
+
+    logout: (req, res) => {
+        req.session.destroy()
+        res.status(200).send('The user has now been logged out. ')
     }
 }

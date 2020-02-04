@@ -14,7 +14,7 @@ app.use(session({
     secret: SESSION_SECRET, 
     cookie: {
         maxAge: 1000 * 60 * 60 * 24
-        /*One hour*/
+        /*24 hours*/
     }
 }))
 
@@ -25,6 +25,7 @@ massive(CONNECTION_STRING).then(db => {
 
 app.post('/api/createAccount', authCtrl.createAccount)
 app.post('/api/login', authCtrl.login)
+app.post('/api/logout', authCtrl.logout)
 
 app.post('/api/posts', mainCtrl.submitPost)
 app.get('/api/personid/:personid', mainCtrl.getCurrentUser)
