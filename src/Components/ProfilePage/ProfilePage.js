@@ -85,8 +85,6 @@ class ProfilePage extends React.Component {
                     <div className="individualPost-photo-and-text-div">
                         <div 
                             className="individualPost-post-text-div"
-                            width="350px"
-                            height="250px"
                         >
                             {individualPostObject.post_text}
                         </div>
@@ -121,7 +119,6 @@ class ProfilePage extends React.Component {
                     handlePostSubmit={this.handlePostSubmit}
                 />
                 {arrayOfDisplayedPosts}
-                <div className="yellowww">hellowwwww</div>
             </div>
         )
     }

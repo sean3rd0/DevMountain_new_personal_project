@@ -1,0 +1,23 @@
+.settings-list-container {
+    padding: 1vh 6vw; 
+}
+
+.settings-list-container > div {
+    padding-top: 3vh; 
+    justify-content: center;
+}
+
+.individual-settings-containers {
+    display: flex; 
+    justify-content: flex-start;
+} 
+
+.individual-setting-text {
+    margin-left: 4px; 
+}
+
+.edit-button {
+    width: 58px; 
+    height: 24px; 
+    margin:  0 5px; 
+}

@@ -30,6 +30,7 @@ app.post('/api/logout', authCtrl.logout)
 app.post('/api/posts', mainCtrl.submitPost)
 app.get('/api/personid/:personid', mainCtrl.getCurrentUser)
 app.get('/api/personid/:personid/pageid/:pageid', mainCtrl.getCurrentPage)
+app.put('/api/personid/:personid/settings', mainCtrl.editPersonalSettings)
 
 app.listen(SERVER_PORT, () => {
     console.log(`Listening on Port ${SERVER_PORT}`)

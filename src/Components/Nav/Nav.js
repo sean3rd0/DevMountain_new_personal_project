@@ -88,26 +88,24 @@ class Nav extends React.Component {
         this.setState({
             showLeftMenu: !this.state.showLeftMenu
         })
-        console.log('this is this.state.showLeftMenu: ', this.state.showLeftMenu)
     }
 
     rightMenuToggle = () => {
         this.setState({
             showRightMenu: !this.state.showRightMenu
         })
-        console.log('this is this.state.showRightMenu: ', this.state.showRightMenu)
     }
 
     handleFriendsButtonClick = () => {
-        this.props.history.push(`/${this.props.user.person_id}/friends`)
+        this.props.history.push(`/${this.props.user.personId}/friends`)
     }
 
     handleFeedButtonClick = () => {
-        this.props.history.push(`/${this.props.user.person_id}/feed`)
+        this.props.history.push(`/${this.props.user.personId}/feed`)
     }
 
     handleSettingsButtonClick = () => {
-        this.props.history.push(`/${this.props.user.person_id}/settings`)
+        this.props.history.push(`/${this.props.user.personId}/settings`)
     }
 
     handleLogoutButtonClick = () => {

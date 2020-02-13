@@ -24,9 +24,24 @@ module.exports = {
         const {personid, pageid} = req.params
         
         let currentPageAndItsTenMostRecentPosts = await db.get_current_page({personId: personid})
-        console.log('this is currentPageAndItsTenMostRecentPosts BEFORE getting it at index 0: ', currentPageAndItsTenMostRecentPosts)
+        // console.log('this is currentPageAndItsTenMostRecentPosts BEFORE getting it at index 0: ', currentPageAndItsTenMostRecentPosts)
         
         res.status(200).send(currentPageAndItsTenMostRecentPosts)
+    }, 
+
+    editPersonalSettings: async (req, res) => {
+        const db = req.app.get('db')
+        const {personid} = req.params 
+        const {firstname, lastname, profilePic} = req.body
+
+        // (firstname != null) ? 
+        // (let individualPersonalSettingToEdit = firstname) : 
+        // lastname != null ? 
+        // let individualPersonalSettingToEdit = lastname 
+        // : 
+        // let editedIndividualPersonalSetting = await db.
+        console.log('this is the request body: ', req.body)
+        res.status(200).send('editPersonalSettings in the mainCtrl worked')
     }
 
 }
