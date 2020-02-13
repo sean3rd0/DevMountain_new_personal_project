@@ -33,10 +33,17 @@ const initialState = {
     */]
 }
 
+const GET_REDUX_STATE = "GET_REDUX_STATE"
 const UPDATE_USER_ON_REDUX_STATE = "UPDATE_USER_ON_REDUX_STATE"
 const UPDATE_CURRENT_PAGE_ON_REDUX_STATE = "UPDATE_CURRENT_PAGE_ON_REDUX_STATE"
 const UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE = "UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE"
 const ADD_NEW_POST = "ADD_NEW_POST"
+
+export function getReduxState(){
+    return {
+        type: GET_REDUX_STATE
+    }
+}
 
 export function updateUserOnReduxState(updatedUserObject){
     return {
@@ -69,6 +76,11 @@ export function addNewPost(newPost){
 export default function reducer (state = initialState, action){
     const {type, payload} = action
     switch(type){
+        case GET_REDUX_STATE: 
+            return {
+                ...state
+            }
+
         case UPDATE_USER_ON_REDUX_STATE: 
             return {
                 ...state, 

@@ -3,7 +3,7 @@ import Nav from "../Nav/Nav"
 import axios from "axios"
 import "./Settings.css"
 import {connect} from "react-redux" 
-import {updateUserOnReduxState} from "../../ducks/reducers/reducer"
+import {updateUserOnReduxState/*, getReduxState*/} from "../../ducks/reducers/reducer"
 
 class Settings extends React.Component {
     constructor(){
@@ -20,7 +20,24 @@ class Settings extends React.Component {
             editProfilePicButton: false 
         }
     }
-    
+
+    componentDidMount = () => {
+        axios
+            .get(`/api/personid/${this.props.match.params.personid}`)
+            .then(response => {
+                this.props.updateUserOnReduxState(response.data)
+            })
+            .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount OUTER axios.get request: ', err)})
+    }
+
+    componentDidUpdate = () => {
+        axios
+            .get(`/api/personid/${this.props.match.params.personid}`)
+            .then(response => {
+                this.props.updateUserOnReduxState(response.data)
+            })
+            .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount OUTER axios.get request: ', err)})
+    }
     
     handleEditInputChange = (event) => {
         this.setState({
@@ -49,41 +66,180 @@ class Settings extends React.Component {
     // }
 
     handleEditSubmitFirstnameButtonClick = () => {
-        console.log('this is how this.state.editFirst... is received: ', this.state.editFirstnameInput)
-        this.state.editFirstnameButton ? 
-        // console.log('this is editFirstnameInputOnState: ', editFirstnameInputOnState) 
-            this.state.editFirstnameInput ?
-            axios.put(`/api/personid/${this.props.match.params.personid}/settings`, {
-                firstname: this.state.editFirstnameInput
-            })
-            .then(response => {
-                console.log('this is the response from the handleeditsubmitfirstnamebuttonclick: ', response)
-                this.setState({
-                    editFirstnameInput: "", 
-                    editFirstnameButton: false
-                })
+        !this.state.editFirstnameButton ? 
+            this.setState({
+                editFirstnameButton: true
             }) 
-            : 
-            alert('You must type something in order to submit :)')
-        :
-        this.setState({
-            editFirstnameButton: true
-        })
+        : 
+        !this.state.editFirstnameInput ? 
+            alert('You must type something in order to submit :)') 
+        : 
+        this.state.editFirstnameInput.match(/^[A-Za-z]+$/) ? 
+            axios
+                .put(`/api/personid/${this.props.match.params.personid}/settings`, {
+                    firstname: this.state.editFirstnameInput
+                })
+                .then(response => {
+                    console.log('this is the response from the handleeditsubmitfirstnamebuttonclick: ', response)
+                    this.setState({
+                        editFirstnameInput: "", 
+                        editFirstnameButton: false
+                    })
+                }) 
+                .catch(err => {
+                    console.log('this is the error that came back from the axios request in the Settings.js handleEditSubmitFirstnameButtonClick function: ', err)
+                })
+        : 
+        alert('Names must BEGIN with and CONTAIN at least one letter (A-Z or a-z). ')
     }
 
+    handleEditSubmitLastnameButtonClick = () => {
+        !this.state.editLastnameButton ? 
+            this.setState({
+                editLastnameButton: true
+            }) 
+        : 
+        !this.state.editLastnameInput ? 
+            alert('You must type something in order to submit :)') 
+        : 
+        this.state.editLastnameInput.match(/^[A-Za-z]+$/) ? 
+            axios
+                .put(`/api/personid/${this.props.match.params.personid}/settings`, {
+                    lastname: this.state.editLastnameInput
+                })
+                .then(response => {
+                    console.log('this is the response from the handleeditsubmitlastnamebuttonclick: ', response)
+                    this.setState({
+                        editLastnameInput: "", 
+                        editLastnameButton: false
+                    })
+                }) 
+                .catch(err => {
+                    console.log('this is the error that came back from the axios request in the Settings.js handleEditSubmitLastnameButtonClick function: ', err)
+                })
+        : 
+        alert('Names must BEGIN with and CONTAIN at least one letter (A-Z or a-z). ')
+    }
+
+        // handleEditSubmitProfilePicButtonClick = () => {
+        //     !this.state.editProfilePicButton ? 
+        //         this.setState({
+        //             editProfilePicButton: true
+        //         })
+        //     : 
+        //         !this.state.editProfilePicInput ? 
+        //             alert('You must type something in order to submit :)') 
+        //         : 
+        //             function validURL(str) {
+        //                 var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        //                 '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+        //                 '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        //                 '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+        //                 '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+        //                 '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        //                 return !!pattern.test(str);
+        //             }
+
+        //             !validURL(this.state.editProfilePicInput) ? 
+        //                 alert('The input accepts a photo URL. ')
+        //                 // this.state.editProfilePicInput.
+        //             : 
+        //                 axios
+        //                     .put(`/api/personid/${this.props.match.params.personid}/settings`, {
+        //                         profilePic: this.state.editProfilePicInput
+        //                     })
+        //                     .then(response => {
+        //                         console.log('this is the response from the handleeditsubmitlastnamebuttonclick: ', response)
+        //                         this.setState({
+        //                             editLastnameInput: "", 
+        //                             editLastnameButton: false
+        //                         })
+        //                     }) 
+        //                     .catch(err => {
+        //                         console.log('this is the error that came back from the axios request in the Settings.js handleEditSubmitProfilePicButtonClick function: ', err)
+        //                     })
+        // } 
+
+        // handleEditSubmitProfilePicButtonClick = () => {
+        //     !this.state.editProfilePicButton ? 
+        //         this.setState({
+        //             editProfilePicButton: true
+        //         }) 
+        //     : 
+        //     !this.state.editProfilePicInput ? 
+        //         alert('You must type something in order to submit :)') 
+        //     : 
+        //     this.state.editProfilePicInput.match(/^[A-Za-z]+$/) ? 
+        //         axios
+        //             .put(`/api/personid/${this.props.match.params.personid}/settings`, {
+        //                 profilePic: this.state.editProfilePicInput
+        //             })
+        //             .then(response => {
+        //                 console.log('this is the response from the handleeditsubmitProfilePicbuttonclick: ', response)
+        //                 this.setState({
+        //                     editProfilePicInput: "", 
+        //                     editProfilePicButton: false
+        //                 })
+        //             }) 
+        //             .catch(err => {
+        //                 console.log('this is the error that came back from the axios request in the Settings.js handleEditSubmitProfilePicButtonClick function: ', err)
+        //             })
+        //     : 
+        //     alert('Inputs must BEGIN with and CONTAIN at least one letter (A-Z or a-z). ')
+        // }
+
+        handleEditSubmitProfilePicButtonClick = () => {
+            let validURL = function (str) {
+                var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+                '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+                return !!pattern.test(str);
+            }
+            !this.state.editProfilePicButton ? 
+                this.setState({
+                    editProfilePicButton: true
+                })
+            : 
+                !this.state.editProfilePicInput ? 
+                    alert('You must type something in order to submit :)') 
+                : 
+                    !validURL(this.state.editProfilePicInput) ? 
+                        alert('The input accepts a photo URL. ')
+                        // this.state.editProfilePicInput.
+                    : 
+                        axios
+                            .put(`/api/personid/${this.props.match.params.personid}/settings`, {
+                                profilePic: this.state.editProfilePicInput
+                            })
+                            .then(response => {
+                                console.log('this is the response from the handleeditsubmitlastnamebuttonclick: ', response)
+                                this.setState({
+                                    editLastnameInput: "", 
+                                    editLastnameButton: false
+                                })
+                            }) 
+                            .catch(err => {
+                                console.log('this is the error that came back from the axios request in the Settings.js handleEditSubmitProfilePicButtonClick function: ', err)
+                            })
+        } 
+
+        
 
 
 
 
     render(){ 
         let firstname = "(no first name)"
-        if (this.props.user.firstname == true) (firstname = this.props.user.firstname);
+        if (this.props.user.firstname) {firstname = this.props.user.firstname};
 
         let lastname = "(no last name)"
-        if (this.props.user.lastname == true) (lastname = this.props.user.lastname);
+        if (this.props.user.lastname) {lastname = this.props.user.lastname};
 
         let profilePic = "(no profile picture)"
-        if (this.props.user.profilePic == true) (profilePic = this.props.user.profilePic); 
+        if (this.props.user.profilePic) {profilePic = this.props.user.profilePic}; 
         
         return (
             <div>
@@ -95,11 +251,11 @@ class Settings extends React.Component {
                 </h3>
                 <div className="settings-list-container">
                     <div className="individual-settings-containers">
-                        <text>Username: {this.props.user.username}</text>
+                        <div>Username: {this.props.user.username}</div>
                     </div>
                     <div className="individual-settings-containers">
-                        <text>First Name: 
-                            <text className="individual-setting-text">
+                        <div>First Name: 
+                            <div className="individual-setting-div">
                                 {
                                     this.state.editFirstnameButton === false ? 
                                     firstname 
@@ -109,8 +265,8 @@ class Settings extends React.Component {
                                         onChange={event => this.handleEditInputChange(event)}
                                     />
                                 }
-                            </text>
-                        </text>
+                            </div>
+                        </div>
                         <button 
                             name="editFirstnameButton"
                             className="edit-button" 
@@ -126,8 +282,8 @@ class Settings extends React.Component {
                         </button>
                     </div>
                     <div className="individual-settings-containers">
-                        <text>Last Name: 
-                            <text className="individual-setting-text">
+                        <div>Last Name: 
+                            <div className="individual-setting-div">
                                 {
                                     this.state.editLastnameButton === false ? 
                                     lastname 
@@ -137,13 +293,13 @@ class Settings extends React.Component {
                                         onChange={event => this.handleEditInputChange(event)}
                                     />
                                 }
-                            </text>
-                        </text>
+                            </div>
+                        </div>
                         <button 
                             name="editLastnameButton"
                             className="edit-button" 
                             // onClick={event => this.handleEditSubmitButtonClick(event, this.state.editLastnameInput)}
-                            onClick={() => console.log(`You haven't set up the Lastname or ProfilePic buttons' onClick events yet. `)}
+                            onClick={this.handleEditSubmitLastnameButtonClick}
                         >
                             {
                                 this.state.editLastnameButton === false ? 
@@ -154,24 +310,25 @@ class Settings extends React.Component {
                         </button>
                     </div>
                     <div className="individual-settings-containers">
-                        <text>Profile Picture: 
-                            <text className="individual-setting-text">
-                                {
-                                    this.state.editProfilePicButton === false ? 
-                                    profilePic 
-                                    : 
-                                    <input
-                                        name="editProfilePicInput"
-                                        onChange={event => this.handleEditInputChange(event)}
-                                    />
-                                }
-                            </text>
-                        </text>
+                        <div>Profile Picture:</div>
+                        {
+                            this.state.editProfilePicButton === false ? 
+                                <img 
+                                className="individual-setting-div name-display-profile-picture" 
+                                src={this.props.user.profilePic} 
+                                alt='A beautiful person' 
+                                />
+                            : 
+                                <input
+                                    name="editProfilePicInput"
+                                    onChange={event => this.handleEditInputChange(event)}
+                                />
+                        }
                         <button 
                             name="editProfilePicButton"
                             className="edit-button" 
                             // onClick={event => this.handleEditSubmitButtonClick(event, editProfilePicInput)}
-                            onClick={() => console.log(`You haven't set up the Lastname or ProfilePic buttons' onClick events yet. `)}
+                            onClick={this.handleEditSubmitProfilePicButtonClick}
                         >
                             {
                                 this.state.editProfilePicButton === false ? 
@@ -194,7 +351,8 @@ const mapStateToProps = (reduxState) => {
 } 
 
 const mapDispatchToProps = {
-    updateUserOnReduxState: updateUserOnReduxState
+    updateUserOnReduxState: updateUserOnReduxState/*, 
+    getReduxState: getReduxState*/
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings)

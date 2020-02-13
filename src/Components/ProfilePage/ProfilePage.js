@@ -30,6 +30,20 @@ class ProfilePage extends React.Component {
         .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount OUTER axios.get request: ', err)})
     } 
 
+    componentDidMount = () => {
+        axios.get(`/api/personid/${this.props.match.params.personid}`)
+        .then(response => {
+            this.props.updateUserOnReduxState(response.data)
+            axios.get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
+            .then(response => {
+                this.props.updateCurrentPageOnReduxState(response.data[0]/*is there more that I need to specify than just response.data? like response.data.blahblahblah?*/)
+                this.props.updatePostsOnCurrentPageOnReduxState(response.data/*is there more that I need to specify than just response.data? like response.data.blahblahblah?*/)
+            })
+            .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)})
+        })
+        .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount OUTER axios.get request: ', err)})
+    } 
+
     handlePostSubmit = (postText, photoURL) => {
         axios.post(`/api/posts`, {
             personId: this.props.user.personId, 

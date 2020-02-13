@@ -21,8 +21,9 @@ class Landing extends React.Component {
         })
     }
 
-    handleCreate = (username, password, confirmPassword) => {
-        axios.post(`/api/createAccount`, {username, password, confirmPassword})
+    handleCreate = (username, password, confirmPassword) => { 
+        let profilePic = 'https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'
+        axios.post(`/api/createAccount`, {username, password, confirmPassword, profilePic})
         .then(response => {
             this.setState({
                 usernameInput: "", 

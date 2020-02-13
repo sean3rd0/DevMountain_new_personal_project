@@ -3,7 +3,8 @@ const bcrypt = require('bcryptjs')
 module.exports = {
     createAccount: async (req, res) => {
         let db = req.app.get('db')
-        let {username, password, confirmPassword} = req.body
+        let {username, password, confirmPassword, profilePic} = req.body
+        let profile_pic = profilePic
 
         let usernameAlreadyExists = await db.check_username({username})
         usernameAlreadyExists = usernameAlreadyExists[0]
@@ -15,7 +16,7 @@ module.exports = {
                 let salt = bcrypt.genSaltSync(10)
                 let hash = bcrypt.hashSync(password, salt)
 
-                let newlyCreatedAccount = await db.create_account({username, password: hash})
+                let newlyCreatedAccount = await db.create_account({username, password: hash, profile_pic})
                 newlyCreatedAccount = newlyCreatedAccount[0]
 
                 let usersFirstPage = await db.create_first_page({

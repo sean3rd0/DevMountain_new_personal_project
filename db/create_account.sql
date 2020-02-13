@@ -1,9 +1,11 @@
 INSERT INTO budr_two_users (
     username, 
-    password
+    password, 
+    profile_pic
 ) VALUES (
     ${username}, 
-    ${password}
+    ${password}, 
+    ${profile_pic}
 ) 
 
 RETURNING *; 
