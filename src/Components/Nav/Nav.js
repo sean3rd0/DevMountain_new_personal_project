@@ -72,7 +72,8 @@ import styled from "styled-components"
 // import {Link} from "react-router-dom"
 import axios from "axios";
 import {connect} from "react-redux"
-import "./Nav.css"
+import "./Nav.css" 
+import {updateCurrentPageOnReduxState, updatePostsOnCurrentPageOnReduxState} from "../../ducks/reducers/reducer"
 
 
 class Nav extends React.Component {
@@ -94,6 +95,19 @@ class Nav extends React.Component {
         this.setState({
             showRightMenu: !this.state.showRightMenu
         })
+    } 
+
+    handleUserProfilePictureClick = () => { 
+        // console.log(this.props.currentPagePersonId, this.props.user.personId)
+        // if (
+        //     ! this.props.currentPagePersonId === this.props.user.personId 
+        //     && 
+
+        // ) {
+        //     alert('USER is NOT viewing THEIR own PROFILE page. ')
+        // } else {
+            alert('this')
+        // }
     }
 
     handleFriendsButtonClick = () => {
@@ -169,7 +183,8 @@ class Nav extends React.Component {
                 </div>
                 <ProfilePicAndMenu>
                     <NavProfilePictureSide className="Nav-component-profile-pic-container">
-                        <ProfilePictureCircle 
+                        <ProfilePictureCircle  
+                            onClick={this.handleUserProfilePictureClick}
                             src={this.props.profilePic}
                             alt="Profile Picture"
                             width="60"
@@ -201,8 +216,14 @@ class Nav extends React.Component {
 const mapStateToProps = (reduxState) => {
     return {
         user: reduxState.reducer.user, 
-        profilePic: reduxState.reducer.user.profilePic
+        profilePic: reduxState.reducer.user.profilePic, 
+        currentPagePersonId: reduxState.reducer.currentPage.personId
     }
+}
+
+const mapDispatchToProps = {
+    updateCurrentPageOnReduxState: updateCurrentPageOnReduxState, 
+    updatePostsOnCurrentPageOnReduxState: updatePostsOnCurrentPageOnReduxState
 }
 
 export default connect(mapStateToProps)(Nav)

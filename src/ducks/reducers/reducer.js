@@ -102,7 +102,8 @@ export default function reducer (state = initialState, action){
                 currentPage: {
                     pageId: payload.page_id, 
                     personId: payload.person_id, 
-                    pageTitle: payload.page_title
+                    pageTitle: payload.page_title/*
+                    isLanding: payload.is_landing (which would be true or false)*/
                 }
             }
 

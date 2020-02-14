@@ -222,7 +222,7 @@ class Settings extends React.Component {
                                 })
                             }) 
                             .catch(err => {
-                                console.log('this is the error that came back from the axios request in the Settings.js handleEditSubmitProfilePicButtonClick function: ', err)
+                                console.log('this is the error from axios.put in the Settings.js handleEditSubmitProfilePicButtonClick function: ', err)
                             })
         } 
 

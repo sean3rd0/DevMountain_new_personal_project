@@ -29,6 +29,15 @@ module.exports = {
         res.status(200).send(currentPageAndItsTenMostRecentPosts)
     }, 
 
+    getFeed: async (req, res) => {
+        const db = req.app.get('db')
+
+        let tenMostRecentFeedPosts = await db.get_ten_most_recent_feed_posts() 
+        console.log('this is tenMostRecentFeedPosts: ', tenMostRecentFeedPosts)
+
+        res.status(200).send(tenMostRecentFeedPosts)
+    },
+
     editPersonalSettings: async (req, res) => {
         const db = req.app.get('db')
         const {personid} = req.params 
