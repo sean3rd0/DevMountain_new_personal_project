@@ -104,7 +104,7 @@ class ProfilePage extends React.Component {
                         </div>
                         <img 
                             src={individualPostObject.post_photo}
-                            alt="a photo related to this post"
+                            alt="post-related"
                             width="350px"
                             height="250px"
                         />

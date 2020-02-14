@@ -49,6 +49,7 @@ module.exports = {
         } 
         else if (profilePic != undefined) {
             let individualPersonalSettingToEdit = profilePic 
+            console.log('person_id and individualPersonalSettingToUpdate: ', person_id, individualPersonalSettingToEdit)
             let editedIndividualPersonalSetting = await db.edit_personal_setting({person_id, columnToUpdate: `profile_pic`, individualPersonalSettingToEdit}); 
             res.status(200).send(editedIndividualPersonalSetting)
         }

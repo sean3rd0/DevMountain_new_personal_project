@@ -215,7 +215,7 @@ class Settings extends React.Component {
                                 profilePic: this.state.editProfilePicInput
                             })
                             .then(response => {
-                                console.log('this is the response from the handleeditsubmitlastnamebuttonclick: ', response)
+                                console.log('this is the response from the handleeditsubmitPROFILEPICbuttonclick: ', response)
                                 this.setState({
                                     editLastnameInput: "", 
                                     editLastnameButton: false
@@ -238,8 +238,8 @@ class Settings extends React.Component {
         let lastname = "(no last name)"
         if (this.props.user.lastname) {lastname = this.props.user.lastname};
 
-        let profilePic = "(no profile picture)"
-        if (this.props.user.profilePic) {profilePic = this.props.user.profilePic}; 
+        // let profilePic = "(no profile picture)"
+        // if (this.props.user.profilePic) {profilePic = this.props.user.profilePic}; 
         
         return (
             <div>

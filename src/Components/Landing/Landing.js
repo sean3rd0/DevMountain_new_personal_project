@@ -52,7 +52,8 @@ class Landing extends React.Component {
                 passwordInput: "", 
                 confirmPasswordInput: ""
             })
-            this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.landingPage[0].page_id}`)
+            console.log('this is landingPage, and at index[0]: ', response.data.landingPage, response.data.landingPage[0])
+            this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.landingPage.page_id}`)
         })
         .catch(err => {
             this.setState({
