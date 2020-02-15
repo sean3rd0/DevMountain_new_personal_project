@@ -10,6 +10,7 @@ class FriendsList extends React.Component {
         return (
             <div>
                 <Nav 
+                    className="entire-nav-component"
                     history={this.props.history}
                 />
                 FriendsList

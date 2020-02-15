@@ -1,3 +1,7 @@
+* {
+  background-color: #2f3c7e;
+}
+
 .App {
   text-align: center;
   background-color: #2f3c7e;
@@ -111,7 +115,7 @@ button {
   padding-left: 2%;
 }
 
-@media(max-width: 450px){
+@media(max-width: 1024px){
   .mobile-flex {
     display: flex;
     flex-direction: column;
@@ -124,11 +128,26 @@ button {
   }
 }
 
+.entire-nav-component {
+  position: fixed; 
+}
 
-
-.ProfilePageIndividualPostWrappingDiv {
-  margin: 0 0 15px;
+.IndividualPostWrappingDiv {
+  margin: 0 0 50px;
 };
+
+.post-photo {
+  margin: 5px 0 0 0;
+}
+
+.individualPost-post-text-div {
+  max-width: 348px; 
+}
+
+.individualPost-post-text-div-container {
+  display: flex; 
+  justify-content: center;
+}
 
 
 /* .yellowww {

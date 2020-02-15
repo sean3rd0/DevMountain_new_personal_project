@@ -32,8 +32,8 @@
 
 
 
-
 .navbar-icon {
+    background: #263169;
     display: none;
     flex-direction: column;
     justify-content: space-around;
@@ -83,7 +83,7 @@
     right: 0px;
 }
 
-@media (max-width: 450px) {
+@media (max-width: 1024px) {
     
     .navbar-buttons {
         display: none;

@@ -15,13 +15,13 @@ const UserDisplay = (props) => {
             </div>
             <div>
                 <div 
-                    className="UserDisplayInnerParts"
+                    className="UserDisplayInnerParts UsernamePartOfUserDisplay"
                     onClick={() => {props.handleUserDisplayClick(props.personId)}}
-                >{props.firstname} {props.lastname}</div>
+                >{props.username}</div>
                 <div 
                     className="UserDisplayInnerParts"
                     onClick={() => {props.handleUserDisplayClick(props.personId)}}
-                >{props.username}</div>
+                >{props.firstname} {props.lastname}</div>
             </div>
         </div>
     )

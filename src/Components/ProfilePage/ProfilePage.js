@@ -90,7 +90,7 @@ class ProfilePage extends React.Component {
                     <UserDisplay 
                         key={indexOfIndividualPostObject}
                         profilePic={this.props.user.profilePic}
-                        firstname={this.props.user.firstname}
+                        firstname={this.props.user.firstname} 
                         lastname={this.props.user.lastname}
                         username={this.props.user.username}
                         personId={this.props.user.personId}
@@ -115,6 +115,7 @@ class ProfilePage extends React.Component {
         return (
             <div className="yellowww">
                 <Nav 
+                    className="entire-nav-component"
                     history={this.props.history}
                     // user={this.props.user}
                     // handleFriendsButtonClick={this.handleFriendsButtonClick}

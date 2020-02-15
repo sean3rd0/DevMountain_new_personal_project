@@ -80,14 +80,14 @@ class Settings extends React.Component {
                     firstname: this.state.editFirstnameInput
                 })
                 .then(response => {
-                    console.log('this is the response from the handleeditsubmitfirstnamebuttonclick: ', response)
+                    console.log('SETTINGS.JS 83 this is the response from the handleeditsubmitfirstnamebuttonclick: ', response)
                     this.setState({
                         editFirstnameInput: "", 
                         editFirstnameButton: false
                     })
                 }) 
                 .catch(err => {
-                    console.log('this is the error that came back from the axios request in the Settings.js handleEditSubmitFirstnameButtonClick function: ', err)
+                    console.log('SETTINGS.JS 90 this is the error that came back from the axios request in the Settings.js handleEditSubmitFirstnameButtonClick function: ', err)
                 })
         : 
         alert('Names must BEGIN with and CONTAIN at least one letter (A-Z or a-z). ')
@@ -244,6 +244,7 @@ class Settings extends React.Component {
         return (
             <div>
                 <Nav 
+                    className="entire-nav-component"
                     history={this.props.history}
                 /> 
                 <h3 className="settings-title">
@@ -258,6 +259,7 @@ class Settings extends React.Component {
                             <div className="individual-setting-div">
                                 {
                                     this.state.editFirstnameButton === false ? 
+                                    // console.log('firstname on settings.js 262: ', firstname)
                                     firstname 
                                     : 
                                     <input 

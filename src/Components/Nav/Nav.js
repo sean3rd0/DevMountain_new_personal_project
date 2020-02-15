@@ -141,6 +141,7 @@ class Nav extends React.Component {
             margin: 0 0 20px; 
         ` 
         const ProfilePicAndMenu = styled.div`
+            background: #263169;
             display: flex; 
             width: 50%; 
             height: 100%;
@@ -149,6 +150,7 @@ class Nav extends React.Component {
         `
 
         const NavProfilePictureSide = styled.div`
+            background: #263169;
             display: flex; 
             justify-content: center;
             align-items: center;

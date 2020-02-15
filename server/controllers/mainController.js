@@ -47,19 +47,18 @@ module.exports = {
         // let individualPersonalSettingToEdit = ""
 
         if (firstname != undefined) {
-            let individualPersonalSettingToEdit = firstname 
-            let editedIndividualPersonalSetting = await db.edit_personal_setting({person_id, columnToUpdate: `firstname`, individualPersonalSettingToEdit}); 
+            let individualPersonalSettingToEdit = `${firstname}` 
+            let editedIndividualPersonalSetting = await db.edit_firstname_setting({person_id, individualPersonalSettingToEdit}); 
             res.status(200).send(editedIndividualPersonalSetting)
         } 
         else if (lastname != undefined) {
-            let individualPersonalSettingToEdit = lastname 
-            let editedIndividualPersonalSetting = await db.edit_personal_setting({person_id, columnToUpdate: `lastname`, individualPersonalSettingToEdit}); 
+            let individualPersonalSettingToEdit = `${lastname}` 
+            let editedIndividualPersonalSetting = await db.edit_lastname_setting({person_id, individualPersonalSettingToEdit}); 
             res.status(200).send(editedIndividualPersonalSetting)
         } 
         else if (profilePic != undefined) {
-            let individualPersonalSettingToEdit = profilePic 
-            console.log('person_id and individualPersonalSettingToUpdate: ', person_id, individualPersonalSettingToEdit)
-            let editedIndividualPersonalSetting = await db.edit_personal_setting({person_id, columnToUpdate: `profile_pic`, individualPersonalSettingToEdit}); 
+            let individualPersonalSettingToEdit = `${profilePic}`
+            let editedIndividualPersonalSetting = await db.edit_profile_pic_setting({person_id, individualPersonalSettingToEdit}); 
             res.status(200).send(editedIndividualPersonalSetting)
         }
         else {

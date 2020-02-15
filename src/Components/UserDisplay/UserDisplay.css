@@ -1,8 +1,12 @@
 .userDisplayWrappingDiv {
-    margin: 15px 0;
+    margin: 8px 0;
 } 
 
 .UserDisplayInnerParts {
-    margin: 0 0 7px;
+    margin: 0 0 2px;
+}
+
+.UsernamePartOfUserDisplay {
+    font: 20px bold;
 }
 
