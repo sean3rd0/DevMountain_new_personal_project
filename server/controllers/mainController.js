@@ -29,6 +29,37 @@ module.exports = {
         res.status(200).send(currentPageAndItsTenMostRecentPosts)
     }, 
 
+    // *
+    // *
+    // * 
+    // * 
+    // * 
+    // * 
+    // *
+    // *
+    // * 
+    // * 
+    // * 
+    // * 
+    searchFriends: async (req, res) => {
+        const db = req.app.get('db')
+        const {searchParameterFromInput} = req.params 
+
+        res.status(200).send('HEY HEY HEY this was the searchParemeter on mainCtrl: ', searchParameterFromInput)
+    },
+    // *
+    // *
+    // * 
+    // * 
+    // * 
+    // *     
+    // *
+    // *
+    // * 
+    // * 
+    // * 
+    // * 
+
     getFeed: async (req, res) => {
         const db = req.app.get('db')
 
