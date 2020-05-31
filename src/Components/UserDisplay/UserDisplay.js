@@ -2,7 +2,7 @@ import React from "react"
 // import {Link} from "react-router-dom" 
 import "./UserDisplay.css"
 
-const UserDisplay = (props) => {
+const UserDisplay = (props) => { 
     return (
         <div className="userDisplayWrappingDiv">
             <div>

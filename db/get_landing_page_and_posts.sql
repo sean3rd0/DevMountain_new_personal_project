@@ -35,12 +35,8 @@ ON pages.person_id = posts.person_id
 WHERE pages.page_id = (
     SELECT page_id
     FROM budr_two_pages 
-    WHERE person_id = (
-        SELECT person_id
-        FROM budr_two_users 
-        WHERE username = ${username}
-    )
+    WHERE person_id = ${person_id}
 )
 ORDER BY posts.post_id 
 DESC 
-LIMIT 10;
+LIMIT 10; 

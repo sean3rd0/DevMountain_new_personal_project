@@ -98,15 +98,14 @@ class Nav extends React.Component {
     } 
 
     handleUserProfilePictureClick = () => { 
-        // console.log(this.props.currentPagePersonId, this.props.user.personId)
+        console.log('this.props.currentPage.personId: ', this.props.currentPage.personId, 'this.props.user.personId: ', this.props.user.personId)
         // if (
-        //     ! this.props.currentPagePersonId === this.props.user.personId 
+        //     ! this.props.currentPage.PersonId === this.props.user.personId 
         //     && 
 
         // ) {
         //     alert('USER is NOT viewing THEIR own PROFILE page. ')
         // } else {
-            alert('this')
         // }
     }
 
@@ -219,7 +218,7 @@ const mapStateToProps = (reduxState) => {
     return {
         user: reduxState.reducer.user, 
         profilePic: reduxState.reducer.user.profilePic, 
-        currentPagePersonId: reduxState.reducer.currentPage.personId
+        currentPage: reduxState.reducer.currentPage
     }
 }
 

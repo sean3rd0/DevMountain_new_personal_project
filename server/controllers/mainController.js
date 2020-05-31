@@ -37,15 +37,21 @@ module.exports = {
     // * 
     // *
     // *
-    // * 
-    // * 
-    // * 
-    // * 
-    searchFriends: async (req, res) => {
-        const db = req.app.get('db')
-        const {searchParameterFromInput} = req.params 
-
-        res.status(200).send('HEY HEY HEY this was the searchParemeter on mainCtrl: ', searchParameterFromInput)
+        displayFriends: async (req, res) => {
+            const db = req.app.get('db')
+            const {searchParameterFromInput} = req.params 
+            console.log('this is searchParameterFromInput: ', searchParameterFromInput)
+        
+        if (searchParameterFromInput === undefined) {
+            let firstTenResultsOfFriends = await db.get_first_ten_friends({searchParameterFromInput: "?"})
+            console.log('mainCtrl.js displayFriends firstTenResultsOfFriends: ', firstTenResultsOfFriends)
+            // res.status(200).send(firstTenResultsOfFriends)
+        } else {
+            let firstTenResultsOfFriendsFromSearch = await db.get_first_ten_friends({searchParameterFromInput})
+            console.log('mainCtrl.js displayFriends firstTenResultsOfFriendsFromSearch: ', firstTenResultsOfFriendsFromSearch)
+            // res.status(200).send(firstTenResultsOfFriendsFromSearch)
+        }
+        // res.status(200).send('HEY HEY HEY this was the searchParemeter on mainCtrl: ', searchParameterFromInput)
     },
     // *
     // *
@@ -53,12 +59,7 @@ module.exports = {
     // * 
     // * 
     // *     
-    // *
-    // *
-    // * 
-    // * 
-    // * 
-    // * 
+
 
     getFeed: async (req, res) => {
         const db = req.app.get('db')

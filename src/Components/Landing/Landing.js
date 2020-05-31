@@ -24,12 +24,13 @@ class Landing extends React.Component {
     handleCreate = (username, password, confirmPassword) => { 
         let profilePic = 'https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'
         axios.post(`/api/createAccount`, {username, password, confirmPassword, profilePic})
-        .then(response => {
+        .then(response => { 
             this.setState({
                 usernameInput: "", 
                 passwordInput: "", 
                 confirmPasswordInput: ""
-            })
+            }) 
+            console.log('Landing.js handleCreate response.data: ', response.data)
             // this.props.updateUserOnReduxState(response.data.user)
             // this.props.updateCurrentPageOnReduxState(response.data.usersFirstPage)
             this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.usersFirstPage.page_id}`)
@@ -42,17 +43,19 @@ class Landing extends React.Component {
             })
             console.log('This is the error that came instead of a response from the axios request in the handleCreate function on Landing.js: ', err)
         })
-    }
+    } 
 
-    handleLogin = (username, password) => {
+    handleLogin = (username, password) => { 
+        console.log('Landing.js handleLogin username & password: ', username, password)
         axios.post(`/api/login`, {username, password})
         .then(response => {
+            console.log('Landing.js handleLogin axios response.data: ', response.data)
             this.setState({
                 usernameInput: "", 
                 passwordInput: "", 
                 confirmPasswordInput: ""
             })
-            console.log('this is landingPage, and at index[0]: ', response.data.landingPage, response.data.landingPage[0])
+            console.log('Landing.js handleLogin response.data, which is the landingPage, and at index[0]: ', response.data.landingPage, response.data.landingPage[0])
             this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.landingPage.page_id}`)
         })
         .catch(err => {
@@ -126,7 +129,6 @@ class Landing extends React.Component {
                             onChange={event => this.handleInputChange(event)}
                             name="usernameInput"
                             placeholder="JaneDoe1492"
-                            value={this.state.usernameInput}
                         />
                         <div>Username</div>
                     </div>
@@ -137,7 +139,6 @@ class Landing extends React.Component {
                             name="passwordInput"
                             placeholder="3x@mplPassw0rd"
                             type="password"
-                            value={this.state.passwordInput}
                         />
                         <div>Password</div>
                     </div>
