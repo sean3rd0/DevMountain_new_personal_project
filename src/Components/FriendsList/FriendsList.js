@@ -60,21 +60,34 @@ class FriendsList extends React.Component {
             alert('There must be something typed into the search bar in order for it to search for something.')
     }
 
+    handleFollowButtonClick = () => { // this is a new part so it may not work like i want it to
+        // alert('Follow Button Clicked!')
+
+    }
+
     render() {
         let mappedListOfFriendsCurrentlyDisplayed = this.state.listOfFriendsCurrentlyDisplayed.map((individualFriend, indexOfIndividualFriend) => { 
+            console.log(`this is what is returning for each iteration: ${individualFriend}`)
             return (
-                // <UserDisplay 
-                //     key={indexOfIndividualFriend}
-                //     /*super important to not forget: */isFriends={individualFriend.isFriends}/*true or false*/
-                //     personId={individualFriend.person_id}
-                //     username={individualFriend.username}
-                //     firstname={individualFriend.firstname}
-                //     lastname={individualFriend.lastname}
-                //     profilePic={individualFriend.profile_pic}
-                // />
-
                 <div>
-                    this is what it's returning for each iteration: {individualFriend}
+                    <UserDisplay 
+                        key={indexOfIndividualFriend}
+                        // /*super important to not forget: */isFriends={individualFriend.isFriends}/*true or false*/
+                        personId={individualFriend.person_id}
+                        username={individualFriend.username}
+                        firstname={individualFriend.firstname}
+                        lastname={individualFriend.lastname}
+                        profilePic={individualFriend.profile_pic}
+                    />
+                    <div>
+                        <button 
+                            onClick={() => {this.handleFollowButtonClick(individualFriend.person_id /*The users person_id should go here so that you can axios and sql them to see if they're friend*/)}} // this is a new part so it may not work like i want it to
+                        >
+                        Follow</button>
+                    </div>
+                    {/* <div>
+                        this is what it's returning for each iteration: {individualFriend}
+                    </div> */}
                 </div>
             )
         })

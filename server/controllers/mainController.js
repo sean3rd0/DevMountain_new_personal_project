@@ -43,13 +43,13 @@ module.exports = {
             console.log('this is searchParameterFromInput: ', searchParameterFromInput)
         
         if (searchParameterFromInput === undefined) {
-            let firstTenResultsOfFriends = await db.get_first_ten_friends({searchParameterFromInput: "?"})
+            let firstTenResultsOfFriends = await db.get_first_ten_friends({searchParameterFromInput: "%"})
             console.log('mainCtrl.js displayFriends firstTenResultsOfFriends: ', firstTenResultsOfFriends)
-            // res.status(200).send(firstTenResultsOfFriends)
+            res.status(200).send(firstTenResultsOfFriends)
         } else {
             let firstTenResultsOfFriendsFromSearch = await db.get_first_ten_friends({searchParameterFromInput})
             console.log('mainCtrl.js displayFriends firstTenResultsOfFriendsFromSearch: ', firstTenResultsOfFriendsFromSearch)
-            // res.status(200).send(firstTenResultsOfFriendsFromSearch)
+            res.status(200).send(firstTenResultsOfFriendsFromSearch)
         }
         // res.status(200).send('HEY HEY HEY this was the searchParemeter on mainCtrl: ', searchParameterFromInput)
     },
