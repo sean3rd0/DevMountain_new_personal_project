@@ -1,5 +1,6 @@
 import React from "react" 
-import axios from "axios"
+import axios from "axios" 
+import {connect} from "react-redux"
 import Nav from "../Nav/Nav"
 import UserDisplay from "../UserDisplay/UserDisplay"
 
@@ -18,7 +19,7 @@ class FriendsList extends React.Component {
         axios 
             .get(`/api/friendAndUserList`)
             .then(response => {
-                console.log('this is the response.data: ', response.data)
+                console.log('this is the FriendsList.js componentDidMount axios.get request response.data: ', response.data)
                 this.setState({
                     listOfFriendsCurrentlyDisplayed: response.data
                 })
@@ -48,7 +49,7 @@ class FriendsList extends React.Component {
                     //display the text "following." 
                     //If they are not, display a button that says "Follow" which, when clicked, makes an axios request to add them to the user's following list. 
 
-                    console.log('this is the response.data: ', response.data)
+                    console.log('this is the FriendsList.js handleSearchButtonClick axios.get request response.data: ', response.data)
                     this.setState({
                         listOfFriendsCurrentlyDisplayed: response.data
                     })
@@ -67,12 +68,26 @@ class FriendsList extends React.Component {
 
     render() {
         let mappedListOfFriendsCurrentlyDisplayed = this.state.listOfFriendsCurrentlyDisplayed.map((individualFriend, indexOfIndividualFriend) => { 
-            console.log(`this is what is returning for each iteration: ${individualFriend}`)
+            axios 
+                .get(`/api/userRelationship/${this.props.user.personId}/${individualFriend.person_id}`)
+                .then(response => {
+                    console.log('HEY HEY YO YO YO YO YO YO YO HEY HYEYYYEYEYE YHEY EHYE FHE HFUSDLKHFJP EHFHEHFHFHFHFHFHF HA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA HERE IS THE RESPONSE: ', response)
+                    if (response.data === "User is not following this person") {
+                        individualFriend.isFollowing = false
+                        console.log('individualFriend.isFollowing: ', individualFriend.isFollowing)
+                    } else {
+                        individualFriend.isFollowing = true //if I was doing multiple pages and landing pages etc., I would need to use the response.data (the page_id and override_page_id). 
+                        console.log('individualFriend.isFollowing: ', individualFriend.isFollowing)
+                    }
+                }) 
+                .catch(err => {
+                    console.log('This is the error that came back from the FriendsList.js render method mappedListOfFriendsCurrentlyDisplayed axios.get request: ', err)
+                })
             return (
                 <div>
                     <UserDisplay 
                         key={indexOfIndividualFriend}
-                        // /*super important to not forget: */isFriends={individualFriend.isFriends}/*true or false*/
+                        // /*super important to not forget: */isFollowing={individualFriend.isFollowing}/*true or false*/
                         personId={individualFriend.person_id}
                         username={individualFriend.username}
                         firstname={individualFriend.firstname}
@@ -125,4 +140,14 @@ class FriendsList extends React.Component {
     }
 }
 
-export default FriendsList
+const mapStateToProps = (reduxState) => {
+    return {
+        user: reduxState.reducer.user
+    }
+}
+
+const mapDispatchToProps = {
+
+}
+
+export default connect (mapStateToProps, mapDispatchToProps)(FriendsList)

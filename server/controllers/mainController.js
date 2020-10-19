@@ -45,6 +45,9 @@ module.exports = {
         if (searchParameterFromInput === undefined) {
             let firstTenResultsOfFriends = await db.get_first_ten_friends({searchParameterFromInput: "%"})
             console.log('mainCtrl.js displayFriends firstTenResultsOfFriends: ', firstTenResultsOfFriends)
+
+            // let checkIfFollowing = await
+
             res.status(200).send(firstTenResultsOfFriends)
         } else {
             let firstTenResultsOfFriendsFromSearch = await db.get_first_ten_friends({searchParameterFromInput})
@@ -60,6 +63,22 @@ module.exports = {
     // * 
     // *     
 
+    followingOrNotFollowing: async (req, res) => {
+        const db = req.app.get('db') 
+        const {userPersonId, individualFriendPersonId} = req.params 
+
+        isTheCurrentUserFollowingThisPerson = await db.is_the_current_user_following_this_person({userPersonId: userPersonId, individualFriendPersonId: individualFriendPersonId})
+        isTheCurrentUserFollowingThisPerson = isTheCurrentUserFollowingThisPerson[0] 
+
+        console.log('THIS IS isTheCurrentUserFollowingThisPerson: ', isTheCurrentUserFollowingThisPerson)
+        if(isTheCurrentUserFollowingThisPerson){
+            res.status(200).send(isTheCurrentUserFollowingThisPerson)
+        } else {
+            isTheCurrentUserFollowingThisPerson = "User is not following this person"
+            console.log('THIS IS isTheCurrentUserFollowingThisPerson: ', isTheCurrentUserFollowingThisPerson)
+            res.status(200).send(isTheCurrentUserFollowingThisPerson)
+        }
+    }, 
 
     getFeed: async (req, res) => {
         const db = req.app.get('db')
