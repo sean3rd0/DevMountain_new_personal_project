@@ -61,9 +61,8 @@ class FriendsList extends React.Component {
             alert('There must be something typed into the search bar in order for it to search for something.')
     }
 
-    handleFollowButtonClick = () => { // this is a new part so it may not work like i want it to
-        // alert('Follow Button Clicked!')
-
+    handleFollowButtonClick = (individualFriendPersonId) => { // this is a new part so it may not work like i want it to
+        //axios post request where you send the individualFriendPersonId parameter over and add it as a new row in the budr_two_following_list db scheme. 
     }
 
     render() {
@@ -71,7 +70,8 @@ class FriendsList extends React.Component {
             axios 
                 .get(`/api/userRelationship/${this.props.user.personId}/${individualFriend.person_id}`)
                 .then(response => {
-                    console.log('HEY HEY YO YO YO YO YO YO YO HEY HYEYYYEYEYE YHEY EHYE FHE HFUSDLKHFJP EHFHEHFHFHFHFHFHF HA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA HERE IS THE RESPONSE: ', response)
+                    // console.log('HEY HEY YO YO YO YO YO YO YO HEY HYEYYYEYEYE YHEY EHYE FHE HFUSDLKHFJP EHFHEHFHFHFHFHFHF HA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA HERE IS THE RESPONSE: ', response)
+                    console.log('this is individualFriend: ', individualFriend)
                     if (response.data === "User is not following this person") {
                         individualFriend.isFollowing = false
                         console.log('individualFriend.isFollowing: ', individualFriend.isFollowing)
@@ -81,30 +81,57 @@ class FriendsList extends React.Component {
                     }
                 }) 
                 .catch(err => {
+                    console.log('There was an error, but this is individualFriend: ', individualFriend)
                     console.log('This is the error that came back from the FriendsList.js render method mappedListOfFriendsCurrentlyDisplayed axios.get request: ', err)
                 })
-            return (
-                <div>
-                    <UserDisplay 
-                        key={indexOfIndividualFriend}
-                        // /*super important to not forget: */isFollowing={individualFriend.isFollowing}/*true or false*/
-                        personId={individualFriend.person_id}
-                        username={individualFriend.username}
-                        firstname={individualFriend.firstname}
-                        lastname={individualFriend.lastname}
-                        profilePic={individualFriend.profile_pic}
-                    />
-                    <div>
-                        <button 
-                            onClick={() => {this.handleFollowButtonClick(individualFriend.person_id /*The users person_id should go here so that you can axios and sql them to see if they're friend*/)}} // this is a new part so it may not work like i want it to
-                        >
-                        Follow</button>
-                    </div>
-                    {/* <div>
-                        this is what it's returning for each iteration: {individualFriend}
-                    </div> */}
-                </div>
-            )
+
+                if (!individualFriend.isFollowing) {
+                    return (
+                        <div>
+                            <UserDisplay 
+                                key={indexOfIndividualFriend}
+                                isFollowing={individualFriend.isFollowing}/*true or false*/
+                                personId={individualFriend.person_id}
+                                username={individualFriend.username}
+                                firstname={individualFriend.firstname}
+                                lastname={individualFriend.lastname}
+                                profilePic={individualFriend.profile_pic}
+                            />
+                            <div>
+                                <button 
+                                    onClick={() => this.handleFollowButtonClick(individualFriend.personId)} // this is a new part so it may not work like i want it to
+                                >
+                                Follow</button>
+                            </div>
+                            {/* <div>
+                                this is what it's returning for each iteration: {individualFriend}
+                            </div> */}
+                        </div>
+                    )
+                } else {
+                    return (
+                        <div>
+                            <UserDisplay 
+                                key={indexOfIndividualFriend}
+                                isFollowing={individualFriend.isFollowing}/*true or false*/
+                                personId={individualFriend.person_id}
+                                username={individualFriend.username}
+                                firstname={individualFriend.firstname}
+                                lastname={individualFriend.lastname}
+                                profilePic={individualFriend.profile_pic}
+                            />
+                            <div>
+                                <button 
+                                    onClick={() => {this.handleFollowButtonClick(individualFriend.person_id)}} // this is a new part so it may not work like i want it to
+                                    >
+                                Unfollow</button>
+                            </div>
+                            {/* <div>
+                                this is what it's returning for each iteration: {individualFriend}
+                            </div> */}
+                        </div>
+                    )
+                }
         })
 
         // let numberOfPagesOfFriendsToChooseFrom = this.
@@ -119,7 +146,7 @@ class FriendsList extends React.Component {
                     <div className="friends-search-bar-and-search-button">
                         <input 
                             name="searchFriendsInput" 
-                            placeholder="JaneDoe123"
+                            placeholder="JaneDough123"
                             onChange={(event) => {this.handleInputChange(event)}}
                         /> 
                         <button 

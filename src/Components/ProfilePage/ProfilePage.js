@@ -19,7 +19,6 @@ class ProfilePage extends React.Component {
     componentDidMount = () => {
         axios.get(`/api/personid/${this.props.match.params.personid}`)
         .then(response => {
-            console.log('ProfilePage.js componentDidMount OUTER axios resonse.data: ', response.data)
             this.props.updateUserOnReduxState(response.data)
             axios.get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
             .then(response => {
@@ -32,91 +31,108 @@ class ProfilePage extends React.Component {
         // console.log('AAAAAA this is this.props on the ProfilePage.js: ', this.props.user, this.props.currentPage, this.props.postsOnCurrentPage)
     } 
     
-    //THIS COMPONENTDIDUPDATE FUNCTION IS LITERALLY THE EXACT SAME AS THE COMPONENTDIDMOUNT FUNCTION
-    //THIS COMPONENTDIDUPDATE FUNCTION IS LITERALLY THE EXACT SAME AS THE COMPONENTDIDMOUNT FUNCTION
-    // componentDidUpdate = () => {
-    //     axios.get(`/api/personid/${this.props.match.params.personid}`)
-    //     .then(response => {
-    //         this.props.updateUserOnReduxState(response.data)
-    //         axios.get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
-    //         .then(response => {
-    //             this.props.updateCurrentPageOnReduxState(response.data[0]/*is there more that I need to specify than just response.data? like response.data.blahblahblah?*/)
-    //             this.props.updatePostsOnCurrentPageOnReduxState(response.data/*is there more that I need to specify than just response.data? like response.data.blahblahblah?*/)
-    //         })
-    //         .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)})
-    //     })
-    //     .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount OUTER axios.get request: ', err)})
-    // } 
-    //THIS COMPONENTDIDUPDATE FUNCTION IS LITERALLY THE EXACT SAME AS THE COMPONENTDIDMOUNT FUNCTION
-    //THIS COMPONENTDIDUPDATE FUNCTION IS LITERALLY THE EXACT SAME AS THE COMPONENTDIDMOUNT FUNCTION
 
-    handlePostSubmit = (postText, photoURL) => {
-        axios.post(`/api/posts`, {
-            personId: this.props.user.personId, 
-            pageId: this.props.currentPage.pageId, 
-            postText, 
-            postPhoto: photoURL
-        })
-        .then(response => {
-            this.props.addNewPost({
-                personId: response.data.personId, 
-                pageId: response.data.pageId, 
-                postText: response.data.postText, 
-                postPhoto: response.data.postPhoto
+    handlePostSubmit = (postText, photoURL) => { 
+        if (!photoURL) {
+            axios.post(`/api/posts`, {
+                personId: this.props.match.params.personid, 
+                pageId: this.props.match.params.pageid, 
+                postText
             })
-        })
-        .catch(err => {
-            console.log('this is the error that came from the axios.post request in the handlePostSubmit function on ProfilePage.js: ', err)
-        })
+            .then(response => {
+                this.props.addNewPost({
+                    personId: response.data.personId, 
+                    pageId: response.data.pageId, 
+                    postText: response.data.postText
+                })
+            })
+            .catch(err => {
+                console.log('this is the error that came from the axios.post request in the handlePostSubmit function on ProfilePage.js: ', err)
+            })
+        } else {
+            axios.post(`/api/posts`, {
+                personId: this.props.match.params.personid, 
+                pageId: this.props.match.params.pageid, 
+                postText, 
+                postPhoto: photoURL
+            })
+            .then(response => {
+                this.props.addNewPost({
+                    personId: response.data.personId, 
+                    pageId: response.data.pageId, 
+                    postText: response.data.postText, 
+                    postPhoto: response.data.postPhoto
+                })
+            })
+            .catch(err => {
+                console.log('this is the error that came from the axios.post request in the handlePostSubmit function on ProfilePage.js: ', err)
+            })
+        }
     }
 
-    // handleFriendsButtonClick = () => {
-    //     console.log('friends clicked')
-    // }
 
-    // handleFeedButtonClick = () => {
-    //     // this.props.history.push('/')
-    //     console.log('feed clicked')
-    // }
-
-    // handleSettingsButtonClick = () => {
-    //     console.log('settings clicked')
-    // }
-
-    // handleLogoutButtonClick = () => {
-    //     console.log('logout clicked')
-    // }
+    handleUserDisplayClick = () => {
+        console.log('this is the this.props.currentPage and this.props.user: ', this.props.currentPage, this.props.user)
+    }
 
     render(){
         //this.props.currentPage is not needed while I'm just experimenting with this little project. 
-        let arrayOfDisplayedPosts = this.props.postsOnCurrentPage.map((individualPostObject, indexOfIndividualPostObject) => {
-            return (
-                <div className="ProfilePageIndividualPostWrappingDiv">
-                    <div className="individualPost-UserDisplay">
-                    <UserDisplay 
-                        key={indexOfIndividualPostObject}
-                        profilePic={this.props.user.profilePic}
-                        firstname={this.props.user.firstname} 
-                        lastname={this.props.user.lastname}
-                        username={this.props.user.username}
-                        personId={this.props.user.personId}
-                    />
-                    </div>
-                    <div className="individualPost-photo-and-text-div">
-                        <div 
-                            className="individualPost-post-text-div"
-                        >
-                            {individualPostObject.post_text}
-                        </div>
-                        <img 
-                            src={individualPostObject.post_photo}
-                            alt="post-related"
-                            width="350px"
-                            height="250px"
+        let arrayOfDisplayedPosts = this.props.postsOnCurrentPage.map((individualPostObject, indexOfIndividualPostObject) => { 
+            if (!individualPostObject.post_photo) {
+                return (
+                    <div className="ProfilePageIndividualPostWrappingDiv">
+                        <div className="individualPost-UserDisplay">
+                        <UserDisplay 
+                            key={indexOfIndividualPostObject} 
+                            // isFollowing={}
+                            profilePic={this.props.user.profilePic}
+                            firstname={this.props.user.firstname} 
+                            lastname={this.props.user.lastname}
+                            username={this.props.user.username}
+                            personId={this.props.user.personId}
+                            onClick={() => {this.handleUserDisplayClick()}}
                         />
+                        </div>
+                        <div className="individualPost-photo-and-text-div">
+                            <div 
+                                className="individualPost-post-text-div"
+                            >
+                                {individualPostObject.post_text}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            } else {
+                return (
+                    <div className="ProfilePageIndividualPostWrappingDiv">
+                        <div className="individualPost-UserDisplay">
+                        <UserDisplay 
+                            key={indexOfIndividualPostObject} 
+                            // isFollowing={}
+                            profilePic={this.props.user.profilePic}
+                            firstname={this.props.user.firstname} 
+                            lastname={this.props.user.lastname}
+                            username={this.props.user.username}
+                            personId={this.props.user.personId}
+                            onClick={() => this.handleUserDisplayClick()}                        
+                        />
+                        </div>
+                        <div className="individualPost-photo-and-text-div">
+                            <div 
+                                className="individualPost-post-text-div"
+                            >
+                                {individualPostObject.post_text}
+                            </div>
+                            <img 
+                                src={individualPostObject.post_photo}
+                                alt="post-related"
+                                width="350px"
+                                height="250px"
+                            />
+                        </div>
+                    </div>
+                )
+            }
         })
         return (
             <div className="yellowww">
@@ -131,6 +147,7 @@ class ProfilePage extends React.Component {
                     lastname={this.props.user.lastname}
                     username={this.props.user.username}
                     personId={this.props.user.personId}
+                    onClick={() => {this.handleUserDisplayClick()}}
                 />
                 <PostTemplate 
                     handlePostSubmit={this.handlePostSubmit}

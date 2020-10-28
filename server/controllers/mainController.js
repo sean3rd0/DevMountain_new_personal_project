@@ -21,12 +21,28 @@ module.exports = {
 
     getCurrentPage: async (req, res) => {
         const db = req.app.get('db')
-        const {personid, pageid} = req.params
+        const {personid, pageid} = req.params 
+
+        let pageId = pageid
+        let doesThisPageHavePosts = await db.check_page_for_posts({pageId})
+
+        console.log('this is doesthispage: ', doesThisPageHavePosts)
         
-        let currentPageAndItsTenMostRecentPosts = await db.get_current_page({personId: personid})
-        // console.log('this is currentPageAndItsTenMostRecentPosts BEFORE getting it at index 0: ', currentPageAndItsTenMostRecentPosts)
+        if (!doesThisPageHavePosts[0]) {
+            let currentPageWhichDoesNotHaveAnyPosts = await db.get_current_page_which_does_not_have_any_posts({pageId})
+            
+            currentPageWhichDoesNotHaveAnyPosts = currentPageWhichDoesNotHaveAnyPosts[0]
+
+            res.status(200).send(currentPageWhichDoesNotHaveAnyPosts)
+        } else {
+            let currentPageAndItsTenMostRecentPosts = await db.get_current_page({
+                personId: personid, 
+                pageId: pageid
+            })
+            
+            res.status(200).send(currentPageAndItsTenMostRecentPosts)
+        }
         
-        res.status(200).send(currentPageAndItsTenMostRecentPosts)
     }, 
 
     // *

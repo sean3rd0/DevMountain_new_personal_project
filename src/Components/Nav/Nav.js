@@ -98,7 +98,8 @@ class Nav extends React.Component {
     } 
 
     handleUserProfilePictureClick = () => { 
-        console.log('this.props.currentPage.personId: ', this.props.currentPage.personId, 'this.props.user.personId: ', this.props.user.personId)
+        console.log('this.props: ', this.props)
+        // .currentPage.personId: ', this.props.currentPage.personId, 'this.props.user.personId: ', this.props.user.personId)
         // if (
         //     ! this.props.currentPage.PersonId === this.props.user.personId 
         //     && 
@@ -126,6 +127,10 @@ class Nav extends React.Component {
         .then(
             this.props.history.push('/')
         )
+    }
+
+    handleUserDisplayClick = () => {
+        console.log('this is the this.props.currentPage and this.props.user: ', this.props.currentPage, this.props.user)
     }
 
 
@@ -190,6 +195,7 @@ class Nav extends React.Component {
                             alt="Profile Picture"
                             width="60"
                             height="60"
+                            onClick={() => {this.handleUserDisplayClick()}}
                         />
                     </NavProfilePictureSide>
                     <div className="navbar-menu">
