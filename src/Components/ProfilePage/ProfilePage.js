@@ -17,19 +17,16 @@ class ProfilePage extends React.Component {
     }
 
     componentDidMount = () => {
-        axios.get(`/api/personid/${this.props.match.params.personid}`)
-        .then(response => {
-            this.props.updateUserOnReduxState(response.data)
-            axios.get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
-            .then(response => {
-                this.props.updateCurrentPageOnReduxState(response.data[0]/*is there more that I need to specify than just response.data? like response.data.blahblahblah?*/)
-                this.props.updatePostsOnCurrentPageOnReduxState(response.data/*is there more that I need to specify than just response.data? like response.data.blahblahblah?*/)
-            })
-            .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)})
+        axios
+        .get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
+        .then(response => { 
+            console.log('hit')
+            if (response.data[0].post_id) {
+                this.props.updatePostsOnCurrentPageOnReduxState(response.data)
+            }
         })
-        .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount OUTER axios.get request: ', err)})
-        // console.log('AAAAAA this is this.props on the ProfilePage.js: ', this.props.user, this.props.currentPage, this.props.postsOnCurrentPage)
-    } 
+        .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)})
+    }
     
 
     handlePostSubmit = (postText, photoURL) => { 
@@ -72,7 +69,7 @@ class ProfilePage extends React.Component {
 
 
     handleUserDisplayClick = () => {
-        console.log('this is the this.props.currentPage and this.props.user: ', this.props.currentPage, this.props.user)
+        console.log('this is the this.props.currentPage: ', this.props.currentPage, 'and this.props.user: ', this.props.user)
     }
 
     render(){
@@ -81,7 +78,9 @@ class ProfilePage extends React.Component {
             if (!individualPostObject.post_photo) {
                 return (
                     <div className="ProfilePageIndividualPostWrappingDiv">
-                        <div className="individualPost-UserDisplay">
+                        <div className="individualPost-UserDisplay" 
+                            onClick={() => {this.handleUserDisplayClick()}}
+                        >   
                         <UserDisplay 
                             key={indexOfIndividualPostObject} 
                             // isFollowing={}
@@ -90,7 +89,6 @@ class ProfilePage extends React.Component {
                             lastname={this.props.user.lastname}
                             username={this.props.user.username}
                             personId={this.props.user.personId}
-                            onClick={() => {this.handleUserDisplayClick()}}
                         />
                         </div>
                         <div className="individualPost-photo-and-text-div">
@@ -105,7 +103,9 @@ class ProfilePage extends React.Component {
             } else {
                 return (
                     <div className="ProfilePageIndividualPostWrappingDiv">
-                        <div className="individualPost-UserDisplay">
+                        <div className="individualPost-UserDisplay"
+                            onClick={() => {this.handleUserDisplayClick()}}
+                        >
                         <UserDisplay 
                             key={indexOfIndividualPostObject} 
                             // isFollowing={}
@@ -113,8 +113,7 @@ class ProfilePage extends React.Component {
                             firstname={this.props.user.firstname} 
                             lastname={this.props.user.lastname}
                             username={this.props.user.username}
-                            personId={this.props.user.personId}
-                            onClick={() => this.handleUserDisplayClick()}                        
+                            personId={this.props.user.personId}                        
                         />
                         </div>
                         <div className="individualPost-photo-and-text-div">

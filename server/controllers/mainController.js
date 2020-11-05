@@ -25,21 +25,19 @@ module.exports = {
 
         let pageId = pageid
         let doesThisPageHavePosts = await db.check_page_for_posts({pageId})
-
-        console.log('this is doesthispage: ', doesThisPageHavePosts)
         
         if (!doesThisPageHavePosts[0]) {
             let currentPageWhichDoesNotHaveAnyPosts = await db.get_current_page_which_does_not_have_any_posts({pageId})
             
-            currentPageWhichDoesNotHaveAnyPosts = currentPageWhichDoesNotHaveAnyPosts[0]
-
+            // currentPageWhichDoesNotHaveAnyPosts = currentPageWhichDoesNotHaveAnyPosts[0]
+            console.log("whichDoesNot: ", currentPageWhichDoesNotHaveAnyPosts)
             res.status(200).send(currentPageWhichDoesNotHaveAnyPosts)
         } else {
             let currentPageAndItsTenMostRecentPosts = await db.get_current_page({
                 personId: personid, 
                 pageId: pageid
             })
-            
+            console.log("andItsTen: ", currentPageAndItsTenMostRecentPosts)
             res.status(200).send(currentPageAndItsTenMostRecentPosts)
         }
         
@@ -103,6 +101,18 @@ module.exports = {
         console.log('this is tenMostRecentFeedPosts: ', tenMostRecentFeedPosts)
 
         res.status(200).send(tenMostRecentFeedPosts)
+    }, 
+
+    getClickedPersonsLandingPage: async (req, res) => {
+        const db = req.app.get('db') 
+        const {personid} = req.params 
+
+        let personId = personid 
+
+        let clickedPersonsLandingPageId = await db.get_page_id({personId})
+        clickedPersonsLandingPageId = clickedPersonsLandingPageId[0]
+
+        res.status(200).send(clickedPersonsLandingPageId)
     },
 
     editPersonalSettings: async (req, res) => {

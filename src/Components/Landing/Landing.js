@@ -31,8 +31,8 @@ class Landing extends React.Component {
                 confirmPasswordInput: ""
             }) 
             console.log('Landing.js handleCreate response.data: ', response.data)
-            // this.props.updateUserOnReduxState(response.data.user)
-            // this.props.updateCurrentPageOnReduxState(response.data.usersFirstPage)
+            this.props.updateUserOnReduxState(response.data.user)
+            this.props.updateCurrentPageOnReduxState(response.data.usersFirstPage)
             this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.usersFirstPage.page_id}`)
         })
         .catch(err => {
@@ -46,16 +46,16 @@ class Landing extends React.Component {
     } 
 
     handleLogin = (username, password) => { 
-        console.log('Landing.js handleLogin username & password: ', username, password)
         axios.post(`/api/login`, {username, password})
         .then(response => {
-            console.log('Landing.js handleLogin axios response.data: ', response.data)
+            // console.log('Landing.js handleLogin axios response.data: ', response.data)
             this.setState({
                 usernameInput: "", 
                 passwordInput: "", 
                 confirmPasswordInput: ""
             })
-            console.log('Landing.js handleLogin response.data, which is the landingPage, and at index[0]: ', response.data.landingPage, response.data.landingPage[0])
+            this.props.updateUserOnReduxState(response.data.user)
+            this.props.updateCurrentPageOnReduxState(response.data.landingPage)
             this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.landingPage.page_id}`)
         })
         .catch(err => {
@@ -174,7 +174,7 @@ class Landing extends React.Component {
 
 const mapDispatchToProps = {
     updateUserOnReduxState: updateUserOnReduxState, 
-    updateCurrentPageOnReduxState: updateCurrentPageOnReduxState
+    updateCurrentPageOnReduxState: updateCurrentPageOnReduxState 
 }
 
 export default connect(null, mapDispatchToProps)(Landing)

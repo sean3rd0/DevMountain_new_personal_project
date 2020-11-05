@@ -19,7 +19,6 @@ class FriendsList extends React.Component {
         axios 
             .get(`/api/friendAndUserList`)
             .then(response => {
-                console.log('this is the FriendsList.js componentDidMount axios.get request response.data: ', response.data)
                 this.setState({
                     listOfFriendsCurrentlyDisplayed: response.data
                 })
@@ -65,19 +64,31 @@ class FriendsList extends React.Component {
         //axios post request where you send the individualFriendPersonId parameter over and add it as a new row in the budr_two_following_list db scheme. 
     }
 
+    handleUserDisplayClick = (userPersonId, clickedPersonId) => {
+        if (userPersonId === clickedPersonId) {
+            this.props.history.push(`/${userPersonId}/pages/${this.props.currentPage.pageId}`)
+        } else { 
+            axios
+                .get(`/api/pages/personid/${clickedPersonId}`)
+                .then(response => {
+                    console.log('this is the handleUserDisplayClick axios.get request response: ', response.data.landing_page_id)
+                    this.props.history.push(`/${clickedPersonId}/pages/${response.data.landing_page_id}`)
+                })
+                .catch(err => {
+                    console.log('This is the error that came back from the FriendsList.js handleUserDisplayClick fn axios.get request: ', err)
+                })
+        }
+    }
+
     render() {
         let mappedListOfFriendsCurrentlyDisplayed = this.state.listOfFriendsCurrentlyDisplayed.map((individualFriend, indexOfIndividualFriend) => { 
             axios 
                 .get(`/api/userRelationship/${this.props.user.personId}/${individualFriend.person_id}`)
                 .then(response => {
-                    // console.log('HEY HEY YO YO YO YO YO YO YO HEY HYEYYYEYEYE YHEY EHYE FHE HFUSDLKHFJP EHFHEHFHFHFHFHFHF HA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA HERE IS THE RESPONSE: ', response)
-                    console.log('this is individualFriend: ', individualFriend)
                     if (response.data === "User is not following this person") {
                         individualFriend.isFollowing = false
-                        console.log('individualFriend.isFollowing: ', individualFriend.isFollowing)
                     } else {
                         individualFriend.isFollowing = true //if I was doing multiple pages and landing pages etc., I would need to use the response.data (the page_id and override_page_id). 
-                        console.log('individualFriend.isFollowing: ', individualFriend.isFollowing)
                     }
                 }) 
                 .catch(err => {
@@ -87,39 +98,50 @@ class FriendsList extends React.Component {
 
                 if (!individualFriend.isFollowing) {
                     return (
-                        <div>
-                            <UserDisplay 
-                                key={indexOfIndividualFriend}
-                                isFollowing={individualFriend.isFollowing}/*true or false*/
-                                personId={individualFriend.person_id}
-                                username={individualFriend.username}
-                                firstname={individualFriend.firstname}
-                                lastname={individualFriend.lastname}
-                                profilePic={individualFriend.profile_pic}
-                            />
+                        <div
+                            key={indexOfIndividualFriend}
+                        >
+                            <div
+                                onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}
+                            >
+                            {/* <div onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}>hey</div> */}
+                                <UserDisplay 
+                                    key={indexOfIndividualFriend}
+                                    isFollowing={individualFriend.isFollowing}/*true or false*/
+                                    personId={individualFriend.person_id}
+                                    username={individualFriend.username}
+                                    firstname={individualFriend.firstname}
+                                    lastname={individualFriend.lastname}
+                                    profilePic={individualFriend.profile_pic}
+                                />
+                            </div>
                             <div>
                                 <button 
                                     onClick={() => this.handleFollowButtonClick(individualFriend.personId)} // this is a new part so it may not work like i want it to
                                 >
                                 Follow</button>
                             </div>
-                            {/* <div>
-                                this is what it's returning for each iteration: {individualFriend}
-                            </div> */}
                         </div>
                     )
                 } else {
                     return (
-                        <div>
-                            <UserDisplay 
-                                key={indexOfIndividualFriend}
-                                isFollowing={individualFriend.isFollowing}/*true or false*/
-                                personId={individualFriend.person_id}
-                                username={individualFriend.username}
-                                firstname={individualFriend.firstname}
-                                lastname={individualFriend.lastname}
-                                profilePic={individualFriend.profile_pic}
-                            />
+                        <div
+                            key={indexOfIndividualFriend}
+                        >
+                            <div
+                                onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}
+                            >
+                            // <div onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}>hey</div>
+                                <UserDisplay 
+                                    key={indexOfIndividualFriend}
+                                    isFollowing={individualFriend.isFollowing}/*true or false*/
+                                    personId={individualFriend.person_id}
+                                    username={individualFriend.username}
+                                    firstname={individualFriend.firstname}
+                                    lastname={individualFriend.lastname}
+                                    profilePic={individualFriend.profile_pic}
+                                />
+                            </div>
                             <div>
                                 <button 
                                     onClick={() => {this.handleFollowButtonClick(individualFriend.person_id)}} // this is a new part so it may not work like i want it to
@@ -169,7 +191,8 @@ class FriendsList extends React.Component {
 
 const mapStateToProps = (reduxState) => {
     return {
-        user: reduxState.reducer.user
+        user: reduxState.reducer.user, 
+        currentPage: reduxState.reducer.currentPage
     }
 }
 

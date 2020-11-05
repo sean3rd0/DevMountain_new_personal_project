@@ -34,6 +34,7 @@ app.get('/api/friendAndUserList/:searchParameterFromInput', mainCtrl.displayFrie
 app.get('/api/friendAndUserList', mainCtrl.displayFriends)
 app.get('/api/feed', mainCtrl.getFeed)
 app.get('/api/userRelationship/:userPersonId/:individualFriendPersonId', mainCtrl.followingOrNotFollowing)
+app.get('/api/pages/personid/:personid', mainCtrl.getClickedPersonsLandingPage)
 app.put('/api/personid/:personid/settings', mainCtrl.editPersonalSettings)
 
 app.listen(SERVER_PORT, () => {
