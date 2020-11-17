@@ -23,19 +23,32 @@ massive(CONNECTION_STRING).then(db => {
     console.log("db connected")
 })
 
+//Below: ALL axios calls routed through AUTHcontroller
 app.post('/api/createAccount', authCtrl.createAccount)
 app.post('/api/login', authCtrl.login)
 app.post('/api/logout', authCtrl.logout)
 
+//Below: axios POST calls routed through MAINcontroller
 app.post('/api/posts', mainCtrl.submitPost)
+app.post('/api/followinglist/userid/:userid/friendid/:friendid', mainCtrl.createFollowingPair)
+
+//Below: axios GET calls routed through MAINcontroller
+app.get('/api/landingpage/personid/:personid', mainCtrl.getLandingPageInfo)
+app.get('/api/pages/personid/:personid', mainCtrl.getClickedPersonsPageIdAndNames)
 app.get('/api/personid/:personid', mainCtrl.getCurrentUser)
 app.get('/api/personid/:personid/pageid/:pageid', mainCtrl.getCurrentPage) 
 app.get('/api/friendAndUserList/:searchParameterFromInput', mainCtrl.displayFriends)
 app.get('/api/friendAndUserList', mainCtrl.displayFriends)
 app.get('/api/feed', mainCtrl.getFeed)
 app.get('/api/userRelationship/:userPersonId/:individualFriendPersonId', mainCtrl.followingOrNotFollowing)
-app.get('/api/pages/personid/:personid', mainCtrl.getClickedPersonsLandingPage)
+
+//Below: axios PUT calls routed through MAINcontroller
 app.put('/api/personid/:personid/settings', mainCtrl.editPersonalSettings)
+
+//Below: axios DELETE calls routed through MAINcontroller
+// app.delete('/api/followinglist/userid/:userid/friendid/:friendid', mainCtrl.deleteFollowingPair)
+
+
 
 app.listen(SERVER_PORT, () => {
     console.log(`Listening on Port ${SERVER_PORT}`)

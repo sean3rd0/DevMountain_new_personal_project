@@ -37,7 +37,7 @@ const GET_REDUX_STATE = "GET_REDUX_STATE"
 const UPDATE_USER_ON_REDUX_STATE = "UPDATE_USER_ON_REDUX_STATE"
 const UPDATE_CURRENT_PAGE_ON_REDUX_STATE = "UPDATE_CURRENT_PAGE_ON_REDUX_STATE"
 const UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE = "UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE"
-const ADD_NEW_POST = "ADD_NEW_POST"
+const ADD_NEW_POST = "ADD_NEW_POST" 
 
 export function getReduxState(){
     return {
@@ -96,19 +96,25 @@ export default function reducer (state = initialState, action){
             }
 
         case UPDATE_CURRENT_PAGE_ON_REDUX_STATE: 
-        console.log('this is the payload for reducer.UPDATE_CURRENT_PAGE...: ', payload)
+        console.log('this is the payload for reducer.UPDATE_CURRENT_PAGE: ', payload)
             return {
                 ...state, 
                 currentPage: {
+                    landingPageId: payload.landing_page_id,
                     pageId: payload.page_id, 
                     personId: payload.person_id, 
-                    pageTitle: payload.page_title/*
+                    pageTitle: payload.page_title, 
+                    profilePic: payload.profile_pic, 
+                    email: payload.email, 
+                    username: payload.username, 
+                    firstname: payload.firstname, 
+                    lastname: payload.lastname/*
                     isLanding: payload.is_landing (which would be true or false)*/
                 }
             }
 
         case UPDATE_POSTS_ON_CURRENT_PAGE_ON_REDUX_STATE: 
-        console.log('this is the payload for reducer.UPDATE_POSTS_ON_CURRENT...: ', payload)
+        console.log('this is the payload for reducer.UPDATE_POSTS: ', payload)
             return {
                 ...state, 
                 postsOnCurrentPage: [
@@ -117,6 +123,7 @@ export default function reducer (state = initialState, action){
             }
 
         case ADD_NEW_POST: 
+        console.log('this is the payload for reducer.ADD_NEW_POST: ', payload)
             return {
                 ...state, 
                 postsOnCurrentPage: [

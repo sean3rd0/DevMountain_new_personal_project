@@ -1,72 +1,3 @@
-// import React from "react"
-// import "./Nav.css"
-// import {Link} from "react-router-dom"
-
-// class Nav extends React.Component {
-//     constructor(props){
-//         super(props)
-//         this.state = {
-//             leftDropdown: false, 
-//             rightDropdown: false
-//         }
-//     }
-
-//     render(){
-//         return (
-//             <nav className="row zOne">
-//                 <div>
-//                     <div 
-//                         className="hamburger-menu"
-//                         onClick={() => this.setState({leftDropdown: !this.state.leftDropdown})}
-//                     >&#9776;</div>
-//                     <div className={this.state.leftDropdown ? "show-dropdown flex-it" : "hide-dropdown"}>
-//                         <Link 
-//                             className="plain-text"
-//                             to="/friends"
-//                         >Friends</Link>
-//                     </div>
-//                 </div>
-//                 <div>
-//                     <Link to="/feed"><div className="Nav-component-feed-link, link-like-blue-div">Feed</div></Link>
-//                 </div>
-//                 <div>
-//                     <div 
-//                         className={this.state.rightDropdown ? "right-hamburger-side-of-nav" : "unopened-right-hamburger"}
-//                         className="hamburger-menu"
-//                         onClick={() => this.setState({rightDropdown: !this.state.rightDropdown})}
-//                     >&#9776;</div>
-//                     <div 
-//                         className={this.state.rightDropdown ? "show-right-dropdown flex-it" : "hide-dropdown"}
-//                     >
-//                         <div>
-//                             <Link 
-//                                 className="plain-text"
-//                                 to={`/${this.props.personId}/pages/${this.props.pageId}`}
-//                             >View My Profile</Link>
-//                         </div>
-//                         <div>
-//                             <Link 
-//                                 className="plain-text"
-//                                 to="/settings"
-//                             >Settings</Link>
-//                         </div>
-//                         <div>
-//                             <Link 
-//                                 className="plain-text"
-//                                 to={`/`}
-//                             >Logout</Link>   
-//                         </div>
-//                     </div>
-//                 </div>
-//             </nav>
-//         )
-//     }
-// }
-
-// export default Nav
-
-
-
 import React from "react" 
 import styled from "styled-components"
 // import {Link} from "react-router-dom"
@@ -97,16 +28,30 @@ class Nav extends React.Component {
         })
     } 
 
-    handleUserProfilePictureClick = () => { 
-        console.log('this.props: ', this.props)
-        // .currentPage.personId: ', this.props.currentPage.personId, 'this.props.user.personId: ', this.props.user.personId)
-        // if (
-        //     ! this.props.currentPage.PersonId === this.props.user.personId 
-        //     && 
-
-        // ) {
-        //     alert('USER is NOT viewing THEIR own PROFILE page. ')
-        // } else {
+    handleUserProfilePictureClick = (userPersonId, clickedPersonId) => {
+        // if (userPersonId === clickedPersonId) {
+        //     this.props.history.push(`/${userPersonId}/pages/${this.props.currentPage.pageId}`)
+        // } else { 
+            axios
+                .get(`/api/landingpage/personid/${clickedPersonId}`)
+                .then(response => {
+                    this.props.updateCurrentPageOnReduxState(response.data)
+                    axios
+                        .get(`/api/personid/${clickedPersonId}/pageid/${response.data.landing_page_id}`)
+                        .then(response => {
+                            // if (response.data[0].post_id) {
+                                this.props.updatePostsOnCurrentPageOnReduxState(response.data)
+                            // }
+                        })
+                        .catch(err => {
+                            console.log('this is the error that came back from the Nav.js handleUserProfilePictureClick INNER axios.get request: ', err)
+                        })
+                    console.log('this is the handleUserProfilePictureClick axios.get request response.data.landing_page_id: ', response.data.landing_page_id)
+                    this.props.history.push(`/${clickedPersonId}/pages/${response.data.landing_page_id}`)
+                })
+                .catch(err => {
+                    console.log('This is the error that came back from the Nav.js handleUserProfilePictureClick fn OUTER axios.get request: ', err)
+                })
         // }
     }
 
@@ -127,10 +72,6 @@ class Nav extends React.Component {
         .then(
             this.props.history.push('/')
         )
-    }
-
-    handleUserDisplayClick = () => {
-        console.log('this is the this.props.currentPage and this.props.user: ', this.props.currentPage, this.props.user)
     }
 
 
@@ -191,11 +132,11 @@ class Nav extends React.Component {
                     <NavProfilePictureSide className="Nav-component-profile-pic-container">
                         <ProfilePictureCircle  
                             onClick={this.handleUserProfilePictureClick}
-                            src={this.props.profilePic}
+                            src={this.props.profilePic}//I need to get the currentPage person_id's profilePic and stuff, not the users as it is in this props down below. 
                             alt="Profile Picture"
                             width="60"
                             height="60"
-                            onClick={() => {this.handleUserDisplayClick()}}
+                            onClick={() => {this.handleUserProfilePictureClick(this.props.user.personId, this.props.user.personId)}}
                         />
                     </NavProfilePictureSide>
                     <div className="navbar-menu">
@@ -233,4 +174,4 @@ const mapDispatchToProps = {
     updatePostsOnCurrentPageOnReduxState: updatePostsOnCurrentPageOnReduxState
 }
 
-export default connect(mapStateToProps)(Nav)
+export default connect(mapStateToProps, mapDispatchToProps)(Nav)

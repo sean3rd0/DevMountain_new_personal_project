@@ -1,6 +1,7 @@
 import React from "react" 
 import axios from "axios" 
 import {connect} from "react-redux"
+import {updateCurrentPageOnReduxState, updatePostsOnCurrentPageOnReduxState} from "../../ducks/reducers/reducer"
 import Nav from "../Nav/Nav"
 import UserDisplay from "../UserDisplay/UserDisplay"
 
@@ -11,7 +12,7 @@ class FriendsList extends React.Component {
         this.state = {
             searchFriendsInput: "",
             listOfFriendsCurrentlyDisplayed: [], 
-            searchPageNumber: 1
+            friendsListPageNumber: 1
         }
     }
 
@@ -60,35 +61,89 @@ class FriendsList extends React.Component {
             alert('There must be something typed into the search bar in order for it to search for something.')
     }
 
-    handleFollowButtonClick = (individualFriendPersonId) => { // this is a new part so it may not work like i want it to
-        //axios post request where you send the individualFriendPersonId parameter over and add it as a new row in the budr_two_following_list db scheme. 
+    handleFollowButtonClick = (individualFriendPersonId, indexOfIndividualFriend) => {  
+        axios
+            .get(`/api/pages/personid/${individualFriendPersonId}`)
+            .then(response => {
+                console.log('FIRST RESPONSE.data: ', response.data)
+                axios
+                    .post(`/api/followinglist/userid/${this.props.match.params.personid}/friendid/${individualFriendPersonId}`, {
+                        pageId: response.data.landing_page_id, 
+                        overridePageId: response.data.landing_page_id, 
+                        firstname: response.data.firstname, 
+                        lastname: response.data.lastname
+                    })
+                    .then(response => {
+                        console.log('FriendsList.js handleFollowButtonClick fn axios.post request response.data: ', response.data)
+                        // this.setState({
+                        //     listOfFriendsCurrentlyDisplayed: response.data
+                        // })
+                    })
+                    .catch(err => {
+                        console.log('This is the error that came back from the FriendsList.js handleFollowButtonClick fn axios.POST request: ', err)
+                    })
+            })
+            .catch(err => {
+                console.log('this is the error that came back from the FriendsList.js handleFollowButtonClick fn axios.GET request: ', err)
+            })
+        // this is a new part so it may not work like i want it to
+        // axios post request where you send the individualFriendPersonId parameter over 
+        // and add it as a new row in the budr_two_following_list db scheme. 
+    } 
+
+    handleUnfollowButtonClick = (individualFriendPersonId) => {
+        console.log('Unfollow button clicked')
+        // axios
+        // .delete(`/api/followinglist/userid/${this.props.match.params.personid}/friendid/${individualFriendPersonId}`)
+        // .then(response => {
+        //     this.setState({
+        //         listOfFriendsCurrentlyDisplayed: response.data
+        //     })
+        // })
+        // .catch(err => {
+        //     console.log('This is the error that came back from the FriendsList.js handleFollowButtonClick axios.post request: ', err)
+        // })
     }
 
     handleUserDisplayClick = (userPersonId, clickedPersonId) => {
-        if (userPersonId === clickedPersonId) {
-            this.props.history.push(`/${userPersonId}/pages/${this.props.currentPage.pageId}`)
-        } else { 
+        // if (userPersonId === clickedPersonId) {
+        //     this.props.history.push(`/${userPersonId}/pages/${this.props.currentPage.pageId}`)
+        // } else { 
             axios
-                .get(`/api/pages/personid/${clickedPersonId}`)
+                .get(`/api/landingpage/personid/${clickedPersonId}`)
                 .then(response => {
-                    console.log('this is the handleUserDisplayClick axios.get request response: ', response.data.landing_page_id)
+                    this.props.updateCurrentPageOnReduxState(response.data);
+                    axios
+                        .get(`/api/personid/${clickedPersonId}/pageid/${response.data.landing_page_id}`)
+                        .then(response => {
+                            // if (response.data[0].post_id) {
+                                this.props.updatePostsOnCurrentPageOnReduxState(response.data)
+                            // }
+                        })
+                        .catch(err => {
+                            console.log('this is the error that came back from the FriendsList handleUserDIsplayClick INNER axios.get request')
+                        })
                     this.props.history.push(`/${clickedPersonId}/pages/${response.data.landing_page_id}`)
                 })
                 .catch(err => {
-                    console.log('This is the error that came back from the FriendsList.js handleUserDisplayClick fn axios.get request: ', err)
+                    console.log('This is the error that came back from the FriendsList.js handleUserDisplayClick fn OUTER axios.get request: ', err)
                 })
         }
-    }
+    // }
 
     render() {
         let mappedListOfFriendsCurrentlyDisplayed = this.state.listOfFriendsCurrentlyDisplayed.map((individualFriend, indexOfIndividualFriend) => { 
             axios 
                 .get(`/api/userRelationship/${this.props.user.personId}/${individualFriend.person_id}`)
                 .then(response => {
-                    if (response.data === "User is not following this person") {
+                    if (response.data === "User is not following this person") { 
+                        console.log("false: ", response.data)
                         individualFriend.isFollowing = false
+                        console.log("FALSE AND NOW: ", individualFriend)
                     } else {
+                        console.log("true: ", response.data)
                         individualFriend.isFollowing = true //if I was doing multiple pages and landing pages etc., I would need to use the response.data (the page_id and override_page_id). 
+                        console.log("TRUE AND NOW: ", individualFriend)
                     }
                 }) 
                 .catch(err => {
@@ -96,7 +151,8 @@ class FriendsList extends React.Component {
                     console.log('This is the error that came back from the FriendsList.js render method mappedListOfFriendsCurrentlyDisplayed axios.get request: ', err)
                 })
 
-                if (!individualFriend.isFollowing) {
+                if (individualFriend.isFollowing === undefined) { 
+                    console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW individualFriend: ', individualFriend)
                     return (
                         <div
                             key={indexOfIndividualFriend}
@@ -117,13 +173,14 @@ class FriendsList extends React.Component {
                             </div>
                             <div>
                                 <button 
-                                    onClick={() => this.handleFollowButtonClick(individualFriend.personId)} // this is a new part so it may not work like i want it to
+                                    onClick={() => this.handleFollowButtonClick(individualFriend.person_id, indexOfIndividualFriend)} // this is a new part so it may not work like i want it to
                                 >
                                 Follow</button>
                             </div>
                         </div>
                     )
                 } else {
+                    console.log('QOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQO individualFriend: ', individualFriend)
                     return (
                         <div
                             key={indexOfIndividualFriend}
@@ -131,7 +188,7 @@ class FriendsList extends React.Component {
                             <div
                                 onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}
                             >
-                            // <div onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}>hey</div>
+                            {/* <div onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}>hey</div> */}
                                 <UserDisplay 
                                     key={indexOfIndividualFriend}
                                     isFollowing={individualFriend.isFollowing}/*true or false*/
@@ -144,13 +201,10 @@ class FriendsList extends React.Component {
                             </div>
                             <div>
                                 <button 
-                                    onClick={() => {this.handleFollowButtonClick(individualFriend.person_id)}} // this is a new part so it may not work like i want it to
+                                    onClick={() => {this.handleUnfollowButtonClick(individualFriend.person_id)}} // this is a new part so it may not work like i want it to
                                     >
                                 Unfollow</button>
                             </div>
-                            {/* <div>
-                                this is what it's returning for each iteration: {individualFriend}
-                            </div> */}
                         </div>
                     )
                 }
@@ -179,10 +233,10 @@ class FriendsList extends React.Component {
                     </div>
                 </div>
                 <div className="list-of-friends-wrapping-div">
-                    ${mappedListOfFriendsCurrentlyDisplayed}
+                    {mappedListOfFriendsCurrentlyDisplayed}
                 </div>
                 <div className="list-of-friends-page-number-bar-wrapping-div">
-                    This is where the page numbers go
+                    {this.state.friendsListPageNumber}
                 </div>
             </div>
         )
@@ -197,7 +251,8 @@ const mapStateToProps = (reduxState) => {
 }
 
 const mapDispatchToProps = {
-
+    updateCurrentPageOnReduxState: updateCurrentPageOnReduxState,
+    updatePostsOnCurrentPageOnReduxState: updatePostsOnCurrentPageOnReduxState
 }
 
 export default connect (mapStateToProps, mapDispatchToProps)(FriendsList)

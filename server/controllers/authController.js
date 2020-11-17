@@ -76,22 +76,22 @@ module.exports = {
 
                 if (landingPageHasPosts) { 
                     let landingPageInfo = await db.get_landing_page_and_posts({person_id}) 
-                    console.log('authCtrl.js login landingPageInfo, and at index 0: ', landingPageInfo, landingPageInfo[0])
+                    // console.log('authCtrl.js login landingPageInfo, and at index 0: ', landingPageInfo, landingPageInfo[0])
                     landingPageInfo = landingPageInfo
 
                     req.session.user = userCredentials //see other budr authCtrl login code... you also respond with the user's landing page... 
                     req.session.landingPage = landingPageInfo
-                    console.log('authCtrl.js login req.session.landingPage: ', req.session.landingPage)
+                    // console.log('authCtrl.js login req.session.landingPage: ', req.session.landingPage)
     
                     res.status(200).send({user: req.session.user, landingPage: req.session.landingPage})
                 } else {
                     let landingPageInfo = await db.get_landing_page_only({person_id})
-                    console.log('authCtrl.js login landingPageInfo: ', landingPageInfo)
+                    // console.log('authCtrl.js login landingPageInfo: ', landingPageInfo)
     
                     req.session.user = userCredentials //see other budr authCtrl login code... you also respond with the user's landing page... 
                     req.session.landingPage = landingPageInfo
-                    console.log('authCtrl.js login req.session.user: ', req.session.user)
-                    console.log('authCtrl.js login req.session.landingPage: ', req.session.landingPage)
+                    // console.log('authCtrl.js login req.session.user: ', req.session.user)
+                    // console.log('authCtrl.js login req.session.landingPage: ', req.session.landingPage)
     
                     res.status(200).send({user: req.session.user, landingPage: req.session.landingPage})
                 }

@@ -1,7 +1,7 @@
 import React from "react"
 import axios from "axios"
 import {connect} from "react-redux"
-import {updateUserOnReduxState, updateCurrentPageOnReduxState} from "../../ducks/reducers/reducer" 
+import {updateUserOnReduxState, updateCurrentPageOnReduxState, updatePostsOnCurrentPageOnReduxState} from "../../ducks/reducers/reducer" 
 import budrLogoPink from "../../budrLogoPink.png"
 
 class Landing extends React.Component {
@@ -55,8 +55,11 @@ class Landing extends React.Component {
                 confirmPasswordInput: ""
             })
             this.props.updateUserOnReduxState(response.data.user)
-            this.props.updateCurrentPageOnReduxState(response.data.landingPage)
-            this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.landingPage.page_id}`)
+            this.props.updateCurrentPageOnReduxState(response.data.landingPage[0]) 
+            // if (response.data.landingPage[0].post_id) {
+                this.props.updatePostsOnCurrentPageOnReduxState(response.data.landingPage)
+            // }
+            this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.landingPage[0].page_id}`)
         })
         .catch(err => {
             this.setState({
@@ -174,7 +177,8 @@ class Landing extends React.Component {
 
 const mapDispatchToProps = {
     updateUserOnReduxState: updateUserOnReduxState, 
-    updateCurrentPageOnReduxState: updateCurrentPageOnReduxState 
+    updateCurrentPageOnReduxState: updateCurrentPageOnReduxState, 
+    updatePostsOnCurrentPageOnReduxState: updatePostsOnCurrentPageOnReduxState
 }
 
 export default connect(null, mapDispatchToProps)(Landing)

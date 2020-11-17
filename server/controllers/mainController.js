@@ -43,6 +43,17 @@ module.exports = {
         
     }, 
 
+    getLandingPageInfo: async (req, res) => {
+        const db = req.app.get('db') 
+        const {personid} = req.params 
+
+        let landingPageIdAndProfilePic = await db.get_landing_page_id_and_profile_pic({personId: personid}) 
+        landingPageIdAndProfilePic = landingPageIdAndProfilePic[0]
+        console.log('this is landingPageIdAndProfiePic, which has a lot of stuff: ', landingPageIdAndProfilePic)
+        
+        res.status(200).send(landingPageIdAndProfilePic)
+    },
+
     // *
     // *
     // * 
@@ -58,14 +69,14 @@ module.exports = {
         
         if (searchParameterFromInput === undefined) {
             let firstTenResultsOfFriends = await db.get_first_ten_friends({searchParameterFromInput: "%"})
-            console.log('mainCtrl.js displayFriends firstTenResultsOfFriends: ', firstTenResultsOfFriends)
+            // console.log('mainCtrl.js displayFriends firstTenResultsOfFriends: ', firstTenResultsOfFriends)
 
             // let checkIfFollowing = await
 
             res.status(200).send(firstTenResultsOfFriends)
         } else {
             let firstTenResultsOfFriendsFromSearch = await db.get_first_ten_friends({searchParameterFromInput})
-            console.log('mainCtrl.js displayFriends firstTenResultsOfFriendsFromSearch: ', firstTenResultsOfFriendsFromSearch)
+            // console.log('mainCtrl.js displayFriends firstTenResultsOfFriendsFromSearch: ', firstTenResultsOfFriendsFromSearch)
             res.status(200).send(firstTenResultsOfFriendsFromSearch)
         }
         // res.status(200).send('HEY HEY HEY this was the searchParemeter on mainCtrl: ', searchParameterFromInput)
@@ -103,16 +114,17 @@ module.exports = {
         res.status(200).send(tenMostRecentFeedPosts)
     }, 
 
-    getClickedPersonsLandingPage: async (req, res) => {
+    getClickedPersonsPageIdAndNames: async (req, res) => {
         const db = req.app.get('db') 
         const {personid} = req.params 
 
         let personId = personid 
 
-        let clickedPersonsLandingPageId = await db.get_page_id({personId})
-        clickedPersonsLandingPageId = clickedPersonsLandingPageId[0]
+        let clickedPersonsPageIdAndNames = await db.get_clicked_persons_page_id_and_names({personId})
+        clickedPersonsPageIdAndNames = clickedPersonsPageIdAndNames[0] 
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA sending back: ', clickedPersonsPageIdAndNames)
 
-        res.status(200).send(clickedPersonsLandingPageId)
+        res.status(200).send(clickedPersonsPageIdAndNames) 
     },
 
     editPersonalSettings: async (req, res) => {
@@ -140,7 +152,7 @@ module.exports = {
         }
         else {
             res.status(412).send('Input fields must BEGIN with and CONTAIN at least one letter (A-Z or a-z). ')
-        } 
+        }
 
 
         //I think I need to do the things below within the above^ if-statement block of code. 
@@ -150,6 +162,30 @@ module.exports = {
         // editedIndividualPersonalSetting = await db.
 
         // res.status(200).send('this is individualPersonalSettingToEdit', individualPersonalSettingToEdit)
-    }
+    }, 
+
+    createFollowingPair: async (req, res) => {
+        const db = req.app.get('db') 
+        const {userid, friendid} = req.params 
+        const userId = userid 
+        const friendId = friendid
+        const {pageId, overridePageId, firstname, lastname} = req.body
+
+        let newlyCreatedFriendship = await db.create_new_following_pair({
+            userId, 
+            friendId, 
+            pageId, 
+            overridePageId, 
+            firstname, 
+            lastname
+        })
+        newlyCreatedFriendship = newlyCreatedFriendship[0]
+
+        res.status(200).send(newlyCreatedFriendship)
+    }/*, 
+
+    // deleteFollowingPair: async (req, res) => {
+
+    // }*/
 
 }

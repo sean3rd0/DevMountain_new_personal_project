@@ -1,7 +1,7 @@
 import React from "react"
 import axios from "axios"
 import {connect} from "react-redux"
-import {updateUserOnReduxState, updateCurrentPageOnReduxState, updatePostsOnCurrentPageOnReduxState, addNewPost} from "../../ducks/reducers/reducer"
+import {updateUserOnReduxState, updateCurrentPageOnReduxState, updatePostsOnCurrentPageOnReduxState, addNewPost, getReduxState} from "../../ducks/reducers/reducer"
 import Nav from "../Nav/Nav"
 import UserDisplay from "../UserDisplay/UserDisplay"
 import PostTemplate from "../PostTemplate/PostTemplate"
@@ -18,15 +18,30 @@ class ProfilePage extends React.Component {
 
     componentDidMount = () => {
         axios
-        .get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
-        .then(response => { 
-            console.log('hit')
-            if (response.data[0].post_id) {
-                this.props.updatePostsOnCurrentPageOnReduxState(response.data)
-            }
-        })
-        .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)})
+            .get(`/api/landingpage/personid/${this.props.match.params.personid}`)
+            .then(response => {
+                console.log('this is profilePage componentDidMount OUTER response.data: ', response.data)
+                this.props.updateCurrentPageOnReduxState(response.data);
+                axios
+                    .get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
+                    .then(response => { 
+                        console.log('this is profilePage componentDidMount INNER response.data: ', response.data)
+                        // if (response.data[0].post_id) {
+                            this.props.updatePostsOnCurrentPageOnReduxState(response.data)
+                        // }
+                    })
+                    .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)})
+            })
+            .catch(err => {
+                console.log('this is the error that came back from the ProfilePage componentDidMount OUTER axios.get request: ', err)
+            })
     }
+
+    // componentDidUpdate = (prevProps, prevState) => {
+    //     if ((prevProps !== this.props) || (prevState !== this.state)) {
+    //         this.props.getReduxState()
+    //     }
+    // }
     
 
     handlePostSubmit = (postText, photoURL) => { 
@@ -75,7 +90,7 @@ class ProfilePage extends React.Component {
     render(){
         //this.props.currentPage is not needed while I'm just experimenting with this little project. 
         let arrayOfDisplayedPosts = this.props.postsOnCurrentPage.map((individualPostObject, indexOfIndividualPostObject) => { 
-            if (!individualPostObject.post_photo) {
+            if (!individualPostObject.post_photo && individualPostObject.post_text) { 
                 return (
                     <div className="ProfilePageIndividualPostWrappingDiv">
                         <div className="individualPost-UserDisplay" 
@@ -84,11 +99,11 @@ class ProfilePage extends React.Component {
                         <UserDisplay 
                             key={indexOfIndividualPostObject} 
                             // isFollowing={}
-                            profilePic={this.props.user.profilePic}
-                            firstname={this.props.user.firstname} 
-                            lastname={this.props.user.lastname}
-                            username={this.props.user.username}
-                            personId={this.props.user.personId}
+                            profilePic={this.props.currentPage.profilePic}
+                            firstname={this.props.currentPage.firstname} 
+                            lastname={this.props.currentPage.lastname}
+                            username={this.props.currentPage.username}
+                            personId={this.props.currentPage.personId}
                         />
                         </div>
                         <div className="individualPost-photo-and-text-div">
@@ -100,7 +115,7 @@ class ProfilePage extends React.Component {
                         </div>
                     </div>
                 )
-            } else {
+            } else if (individualPostObject.post_photo && individualPostObject.post_text) {
                 return (
                     <div className="ProfilePageIndividualPostWrappingDiv">
                         <div className="individualPost-UserDisplay"
@@ -109,11 +124,11 @@ class ProfilePage extends React.Component {
                         <UserDisplay 
                             key={indexOfIndividualPostObject} 
                             // isFollowing={}
-                            profilePic={this.props.user.profilePic}
-                            firstname={this.props.user.firstname} 
-                            lastname={this.props.user.lastname}
-                            username={this.props.user.username}
-                            personId={this.props.user.personId}                        
+                            profilePic={this.props.currentPage.profilePic}
+                            firstname={this.props.currentPage.firstname} 
+                            lastname={this.props.currentPage.lastname}
+                            username={this.props.currentPage.username}
+                            personId={this.props.currentPage.personId}                        
                         />
                         </div>
                         <div className="individualPost-photo-and-text-div">
@@ -141,11 +156,11 @@ class ProfilePage extends React.Component {
                     // user={this.props.user}
                 />
                 <UserDisplay 
-                    profilePic={this.props.user.profilePic}
-                    firstname={this.props.user.firstname}
-                    lastname={this.props.user.lastname}
-                    username={this.props.user.username}
-                    personId={this.props.user.personId}
+                    profilePic={this.props.currentPage.profilePic}
+                    firstname={this.props.currentPage.firstname}
+                    lastname={this.props.currentPage.lastname}
+                    username={this.props.currentPage.username}
+                    personId={this.props.currentPage.personId}
                     onClick={() => {this.handleUserDisplayClick()}}
                 />
                 <PostTemplate 
@@ -169,7 +184,8 @@ const mapDispatchToProps = {
     updateUserOnReduxState: updateUserOnReduxState, 
     updateCurrentPageOnReduxState: updateCurrentPageOnReduxState, 
     updatePostsOnCurrentPageOnReduxState: updatePostsOnCurrentPageOnReduxState,
-    addNewPost: addNewPost
+    addNewPost: addNewPost, 
+    getReduxState: getReduxState
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)

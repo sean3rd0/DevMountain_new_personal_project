@@ -8,7 +8,7 @@ const UserDisplay = (props) => {
             <div>
                 <img 
                     className="profile-pic" 
-                    // onClick={() => {props.handleUserDisplayClick(props.personId)}}
+                    onClick={() => {console.log('props.isFollowing: ', props.isFollowing)}}
                     src={props.profilePic}
                     alt="A beautiful person."
                 />
