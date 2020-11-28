@@ -1,6 +1,6 @@
 SELECT 
     person_id, 
-    username, 
+    username,
     firstname, 
     lastname, 
     profile_pic 
@@ -12,8 +12,34 @@ WHERE
     firstname LIKE CONCAT ('%', ${searchParameterFromInput}, '%')
     OR 
     lastname LIKE CONCAT ('%', ${searchParameterFromInput}, '%')
-ORDER BY firstname ASC 
-LIMIT 10;
+ORDER BY firstname ASC;
+
+-- LIMIT 10;
+
+
+
+
+-- SELECT 
+--     person_id, 
+--     username, 
+--     firstname, 
+--     lastname, 
+--     profile_pic 
+-- FROM 
+--     budr_two_users 
+-- WHERE 
+--     username LIKE CONCAT ('%', ${searchParameterFromInput}, '%')
+--     OR 
+--     firstname LIKE CONCAT ('%', ${searchParameterFromInput}, '%')
+--     OR 
+--     lastname LIKE CONCAT ('%', ${searchParameterFromInput}, '%')
+-- ORDER BY firstname ASC 
+-- LIMIT 10;
+
+
+
+
+
 
 -- SELECT 
 --     person_id, 

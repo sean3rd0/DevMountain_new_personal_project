@@ -83,88 +83,83 @@ class ProfilePage extends React.Component {
     }
 
 
-    handleUserDisplayClick = (clickedPersonId) => {
-        console.log('clickedPersonId: ', clickedPersonId)
-        axios
-        .get(`/api/landingpage/personid/${clickedPersonId}`)
-        .then(response => {
-            this.props.updateCurrentPageOnReduxState(response.data);
-            axios
-                .get(`/api/personid/${clickedPersonId}/pageid/${response.data.landing_page_id}`)
-                .then(response => {
-                    // if (response.data[0].post_id) {
-                        this.props.updatePostsOnCurrentPageOnReduxState(response.data)
-                    // }
-                })
-                .catch(err => {
-                    console.log('this is the error that came back from the FriendsList handleUserDIsplayClick INNER axios.get request')
-                })
-            this.props.history.push(`/${clickedPersonId}/pages/${response.data.landing_page_id}`)
-        })
-        .catch(err => {
-            console.log('This is the error that came back from the FriendsList.js handleUserDisplayClick fn OUTER axios.get request: ', err)
-        })
+    handleUserDisplayClick = () => {
+        console.log('this is the this.props.currentPage: ', this.props.currentPage, 'and this.props.user: ', this.props.user)
     }
 
     render(){
         //this.props.currentPage is not needed while I'm just experimenting with this little project. 
         let arrayOfDisplayedPosts = this.props.postsOnCurrentPage.map((individualPostObject, indexOfIndividualPostObject) => { 
             if (!individualPostObject.post_photo && individualPostObject.post_text) { 
-                return (
-                    <div className="ProfilePageIndividualPostWrappingDiv">
-                        <div className="individualPost-UserDisplay" 
-                            onClick={() => {this.handleUserDisplayClick(individualPostObject.person_id)}}
-                        >   
-                        <UserDisplay 
-                            key={indexOfIndividualPostObject} 
-                            // isFollowing={}
-                            profilePic={individualPostObject.profile_pic}
-                            firstname={individualPostObject.firstname} 
-                            lastname={individualPostObject.lastname}
-                            username={individualPostObject.username}
-                            personId={individualPostObject.person_id}
-                        />
-                        </div>
-                        <div className="individualPost-photo-and-text-div">
-                            <div 
-                                className="individualPost-post-text-div"
-                            >
-                                {individualPostObject.post_text}
+                axios
+                    .get(`api/pages/personid/${individualPostObject.personId}`)
+                    .then(response => {
+                        return (
+                            <div className="ProfilePageIndividualPostWrappingDiv">
+                                <div className="individualPost-UserDisplay" 
+                                    onClick={() => {this.handleUserDisplayClick()}}
+                                >   
+                                <UserDisplay 
+                                    key={indexOfIndividualPostObject} 
+                                    // isFollowing={}
+                                    profilePic={response.data.profilePic}
+                                    firstname={response.data.firstname} 
+                                    lastname={response.data.lastname}
+                                    username={response.data.username}
+                                    personId={response.data.personId}
+                                />
+                                </div>
+                                <div className="individualPost-photo-and-text-div">
+                                    <div 
+                                        className="individualPost-post-text-div"
+                                    >
+                                        {individualPostObject.post_text}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                )
+                        )
+                    })
+                    .catch(err => {
+                        console.log('this is the error that came back from the render method if statement where there IS NOT a post photo, and before the error, here is index: ', indexOfIndividualPostObject, err)
+                    })
             } else if (individualPostObject.post_photo && individualPostObject.post_text) {
-                return (
-                    <div className="ProfilePageIndividualPostWrappingDiv">
-                        <div className="individualPost-UserDisplay"
-                            onClick={() => {this.handleUserDisplayClick(individualPostObject.person_id)}}
-                        >
-                        <UserDisplay 
-                            key={indexOfIndividualPostObject} 
-                            // isFollowing={}
-                            profilePic={individualPostObject.profile_pic}
-                            firstname={individualPostObject.firstname} 
-                            lastname={individualPostObject.lastname}
-                            username={individualPostObject.username}
-                            personId={individualPostObject.person_id}                        
-                        />
-                        </div>
-                        <div className="individualPost-photo-and-text-div">
-                            <div 
-                                className="individualPost-post-text-div"
-                            >
-                                {individualPostObject.post_text}
+                axios
+                    .get(`api/pages/personid/${individualPostObject.personId}`)
+                    .then(response => {
+                        return (
+                            <div className="ProfilePageIndividualPostWrappingDiv">
+                                <div className="individualPost-UserDisplay"
+                                    onClick={() => {this.handleUserDisplayClick()}}
+                                >
+                                <UserDisplay 
+                                    key={indexOfIndividualPostObject} 
+                                    // isFollowing={}
+                                    profilePic={response.data.profilePic}
+                                    firstname={response.data.firstname} 
+                                    lastname={response.data.lastname}
+                                    username={response.data.username}
+                                    personId={response.data.personId}                        
+                                />
+                                </div>
+                                <div className="individualPost-photo-and-text-div">
+                                    <div 
+                                        className="individualPost-post-text-div"
+                                    >
+                                        {individualPostObject.post_text}
+                                    </div>
+                                    <img 
+                                        src={individualPostObject.post_photo}
+                                        alt="post-related"
+                                        width="350px"
+                                        height="250px"
+                                    />
+                                </div>
                             </div>
-                            <img 
-                                src={individualPostObject.post_photo}
-                                alt="post-related"
-                                width="350px"
-                                height="250px"
-                            />
-                        </div>
-                    </div>
-                )
+                        )
+                    })
+                    .catch(err => {
+                        console.log('this is the error that came back from the render method if statement where there IS a post photo, and before the error, here is index: ', indexOfIndividualPostObject, err)
+                    })
             }
         })
         return (
@@ -207,4 +202,17 @@ const mapDispatchToProps = {
     getReduxState: getReduxState
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage) 
+
+
+
+
+
+            axios
+                .get(`api/pages/personid/${individualPostObject.person_id}`)
+                .then(response => {
+                    console.log('response.data: ', response.data)
+                    })
+                .catch(err => {
+                    console.log("this is the err from the render method posts axios.get requests: ", err)
+                })

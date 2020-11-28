@@ -83,8 +83,7 @@ class ProfilePage extends React.Component {
     }
 
 
-    handleUserDisplayClick = (clickedPersonId) => {
-        console.log('clickedPersonId: ', clickedPersonId)
+    handleUserDisplayClick = (userPersonId, clickedPersonId) => {
         axios
         .get(`/api/landingpage/personid/${clickedPersonId}`)
         .then(response => {
@@ -110,6 +109,17 @@ class ProfilePage extends React.Component {
         //this.props.currentPage is not needed while I'm just experimenting with this little project. 
         let arrayOfDisplayedPosts = this.props.postsOnCurrentPage.map((individualPostObject, indexOfIndividualPostObject) => { 
             if (!individualPostObject.post_photo && individualPostObject.post_text) { 
+                axios
+                .get(`api/pages/personid/${individualPostObject.person_id}`)
+                .then(response => {
+                    individualPostObject.profile_pic = response.data.profile_pic
+                    individualPostObject.firstname = response.data.firstname 
+                    individualPostObject.lastname = response.data.lastname
+                    individualPostObject.username = response.data.username
+                    })
+                .catch(err => {
+                    console.log("this is the err from the render method posts axios.get requests: ", err)
+                })
                 return (
                     <div className="ProfilePageIndividualPostWrappingDiv">
                         <div className="individualPost-UserDisplay" 
@@ -118,11 +128,11 @@ class ProfilePage extends React.Component {
                         <UserDisplay 
                             key={indexOfIndividualPostObject} 
                             // isFollowing={}
-                            profilePic={individualPostObject.profile_pic}
-                            firstname={individualPostObject.firstname} 
-                            lastname={individualPostObject.lastname}
-                            username={individualPostObject.username}
-                            personId={individualPostObject.person_id}
+                            profilePic={response.data.profile_pic}
+                            firstname={response.data.firstname} 
+                            lastname={response.data.lastname}
+                            username={response.data.username}
+                            personId={response.data.person_id}
                         />
                         </div>
                         <div className="individualPost-photo-and-text-div">
@@ -143,11 +153,11 @@ class ProfilePage extends React.Component {
                         <UserDisplay 
                             key={indexOfIndividualPostObject} 
                             // isFollowing={}
-                            profilePic={individualPostObject.profile_pic}
-                            firstname={individualPostObject.firstname} 
-                            lastname={individualPostObject.lastname}
-                            username={individualPostObject.username}
-                            personId={individualPostObject.person_id}                        
+                            profilePic={response.data.profilePic}
+                            firstname={response.data.firstname} 
+                            lastname={response.data.lastname}
+                            username={response.data.username}
+                            personId={response.data.personId}                        
                         />
                         </div>
                         <div className="individualPost-photo-and-text-div">

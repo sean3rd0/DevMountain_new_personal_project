@@ -34,7 +34,7 @@ app.post('/api/followinglist/userid/:userid/friendid/:friendid', mainCtrl.create
 
 //Below: axios GET calls routed through MAINcontroller
 app.get('/api/landingpage/personid/:personid', mainCtrl.getLandingPageInfo)
-app.get('/api/pages/personid/:personid', mainCtrl.getClickedPersonsPageIdAndNames)
+app.get('/api/pages/personid/:personid', mainCtrl.getPersonsPageIdAndNames)
 app.get('/api/personid/:personid', mainCtrl.getCurrentUser)
 app.get('/api/personid/:personid/pageid/:pageid', mainCtrl.getCurrentPage) 
 app.get('/api/friendAndUserList/:searchParameterFromInput', mainCtrl.displayFriends)

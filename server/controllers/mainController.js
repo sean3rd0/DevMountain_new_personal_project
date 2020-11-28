@@ -30,7 +30,7 @@ module.exports = {
             let currentPageWhichDoesNotHaveAnyPosts = await db.get_current_page_which_does_not_have_any_posts({pageId})
             
             // currentPageWhichDoesNotHaveAnyPosts = currentPageWhichDoesNotHaveAnyPosts[0]
-            console.log("whichDoesNot: ", currentPageWhichDoesNotHaveAnyPosts)
+
             res.status(200).send(currentPageWhichDoesNotHaveAnyPosts)
         } else {
             let currentPageAndItsTenMostRecentPosts = await db.get_current_page({
@@ -46,6 +46,7 @@ module.exports = {
     getLandingPageInfo: async (req, res) => {
         const db = req.app.get('db') 
         const {personid} = req.params 
+        console.log('personid: ', personid)
 
         let landingPageIdAndProfilePic = await db.get_landing_page_id_and_profile_pic({personId: personid}) 
         landingPageIdAndProfilePic = landingPageIdAndProfilePic[0]
@@ -114,17 +115,17 @@ module.exports = {
         res.status(200).send(tenMostRecentFeedPosts)
     }, 
 
-    getClickedPersonsPageIdAndNames: async (req, res) => {
+    getPersonsPageIdAndNames: async (req, res) => {
         const db = req.app.get('db') 
         const {personid} = req.params 
 
         let personId = personid 
 
-        let clickedPersonsPageIdAndNames = await db.get_clicked_persons_page_id_and_names({personId})
-        clickedPersonsPageIdAndNames = clickedPersonsPageIdAndNames[0] 
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA sending back: ', clickedPersonsPageIdAndNames)
+        let personsPageIdAndNames = await db.get_persons_page_id_and_names({personId})
+        personsPageIdAndNames = personsPageIdAndNames[0] 
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA sending back: ', personsPageIdAndNames)
 
-        res.status(200).send(clickedPersonsPageIdAndNames) 
+        res.status(200).send(personsPageIdAndNames) 
     },
 
     editPersonalSettings: async (req, res) => {

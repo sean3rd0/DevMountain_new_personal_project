@@ -105,7 +105,7 @@ class FriendsList extends React.Component {
         // })
     }
 
-    handleUserDisplayClick = (userPersonId, clickedPersonId) => {
+    handleUserDisplayClick = (/*userPersonId, */clickedPersonId) => {
         // if (userPersonId === clickedPersonId) {
         //     this.props.history.push(`/${userPersonId}/pages/${this.props.currentPage.pageId}`)
         // } else { 
@@ -158,7 +158,7 @@ class FriendsList extends React.Component {
                             key={indexOfIndividualFriend}
                         >
                             <div
-                                onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}
+                                onClick={() => {this.handleUserDisplayClick(/*this.props.user.personId, */individualFriend.person_id)}}
                             >
                             {/* <div onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}>hey</div> */}
                                 <UserDisplay 
@@ -172,10 +172,10 @@ class FriendsList extends React.Component {
                                 />
                             </div>
                             <div>
-                                <button 
+                                {/* <button 
                                     onClick={() => this.handleFollowButtonClick(individualFriend.person_id, indexOfIndividualFriend)} // this is a new part so it may not work like i want it to
                                 >
-                                Follow</button>
+                                Follow</button> */}
                             </div>
                         </div>
                     )
@@ -186,7 +186,7 @@ class FriendsList extends React.Component {
                             key={indexOfIndividualFriend}
                         >
                             <div
-                                onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}
+                                onClick={() => {this.handleUserDisplayClick(/*this.props.user.personId, */individualFriend.person_id)}}
                             >
                             {/* <div onClick={() => {this.handleUserDisplayClick(this.props.user.personId, individualFriend.person_id)}}>hey</div> */}
                                 <UserDisplay 
@@ -200,10 +200,10 @@ class FriendsList extends React.Component {
                                 />
                             </div>
                             <div>
-                                <button 
+                                {/* <button 
                                     onClick={() => {this.handleUnfollowButtonClick(individualFriend.person_id)}} // this is a new part so it may not work like i want it to
                                     >
-                                Unfollow</button>
+                                Unfollow</button> */}
                             </div>
                         </div>
                     )
@@ -236,7 +236,7 @@ class FriendsList extends React.Component {
                     {mappedListOfFriendsCurrentlyDisplayed}
                 </div>
                 <div className="list-of-friends-page-number-bar-wrapping-div">
-                    {this.state.friendsListPageNumber}
+                    {/* {this.state.friendsListPageNumber} */}
                 </div>
             </div>
         )
