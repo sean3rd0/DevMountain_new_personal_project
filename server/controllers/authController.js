@@ -2,13 +2,11 @@ const bcrypt = require('bcryptjs')
 
 module.exports = {
     createAccount: async (req, res) => {
-                // console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO authCtrl.js createAccount HIT)
         let db = req.app.get('db')
         let {username, password, confirmPassword, profilePic} = req.body
         let profile_pic = profilePic
 
         let usernameAlreadyExists = await db.check_username({username}) 
-        // console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO authCtrl.js createAccount usernameAlreadyExists, and at index 0: ', usernameAlreadyExists, usernameAlreadyExists[0])
         usernameAlreadyExists = usernameAlreadyExists[0]
 
         if (usernameAlreadyExists) {
@@ -19,20 +17,16 @@ module.exports = {
                 let hash = bcrypt.hashSync(password, salt)
 
                 let newlyCreatedAccount = await db.create_account({username, password: hash, profile_pic})
-                // console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO authCtrl.js createAccount newlyCreatedAccount, and at index 0: ', newlyCreatedAccount, newlyCreatedAccount[0])
                 newlyCreatedAccount = newlyCreatedAccount[0]
 
                 let usersFirstPage = await db.create_first_page({
                     personId: newlyCreatedAccount.person_id, 
                     pageTitle: `Default Page Title`
                 }) 
-                // console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO authCtrl.js createAccount usersFirstPage, and at index 0: ', usersFirstPage, usersFirstPage[0])
                 usersFirstPage = usersFirstPage[0]
 
                 req.session.user = {...newlyCreatedAccount}
                 req.session.landingPage = usersFirstPage
-                // console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO authCtrl.js createAccount req.session.user: ', req.session.user)
-                // console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO authCtrl.js createAccount req.session.landingPage: ', req.session.landingPage)
 
                 const {user} = req.session
 
@@ -44,10 +38,8 @@ module.exports = {
     }, 
 
     login: async (req, res) => { 
-        // console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO authCtrl.js createAccount HIT)
         let db = req.app.get('db')
         let {username, password} = req.body 
-        // console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO authCtrl.js login username & password from the req.body: ', username, password)
         
         let usernameAlreadyExists = await db.check_username({username})
         usernameAlreadyExists = usernameAlreadyExists[0] 
@@ -58,7 +50,6 @@ module.exports = {
         } else { 
             let userCredentials = await db.get_user_credentials({username}) 
             userCredentials = userCredentials[0] 
-            // console.log('this is userCredentials, which you can use to get the users ID to use in the check_for_posts_on_landing_page function: ', userCredentials)
 
             const authenticated = bcrypt.compareSync(password, userCredentials.password) 
 
@@ -76,22 +67,17 @@ module.exports = {
 
                 if (landingPageHasPosts) { 
                     let landingPageInfo = await db.get_landing_page_and_posts({person_id}) 
-                    // console.log('authCtrl.js login landingPageInfo, and at index 0: ', landingPageInfo, landingPageInfo[0])
                     landingPageInfo = landingPageInfo
 
                     req.session.user = userCredentials //see other budr authCtrl login code... you also respond with the user's landing page... 
                     req.session.landingPage = landingPageInfo
-                    // console.log('authCtrl.js login req.session.landingPage: ', req.session.landingPage)
     
                     res.status(200).send({user: req.session.user, landingPage: req.session.landingPage})
                 } else {
                     let landingPageInfo = await db.get_landing_page_only({person_id})
-                    // console.log('authCtrl.js login landingPageInfo: ', landingPageInfo)
     
                     req.session.user = userCredentials //see other budr authCtrl login code... you also respond with the user's landing page... 
                     req.session.landingPage = landingPageInfo
-                    // console.log('authCtrl.js login req.session.user: ', req.session.user)
-                    // console.log('authCtrl.js login req.session.landingPage: ', req.session.landingPage)
     
                     res.status(200).send({user: req.session.user, landingPage: req.session.landingPage})
                 }

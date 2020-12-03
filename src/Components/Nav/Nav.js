@@ -46,7 +46,6 @@ class Nav extends React.Component {
                         .catch(err => {
                             console.log('this is the error that came back from the Nav.js handleUserProfilePictureClick INNER axios.get request: ', err)
                         })
-                    console.log('this is the handleUserProfilePictureClick axios.get request response.data.landing_page_id: ', response.data.landing_page_id)
                     this.props.history.push(`/${clickedPersonId}/pages/${response.data.landing_page_id}`)
                 })
                 .catch(err => {

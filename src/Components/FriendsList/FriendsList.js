@@ -49,7 +49,6 @@ class FriendsList extends React.Component {
                     //display the text "following." 
                     //If they are not, display a button that says "Follow" which, when clicked, makes an axios request to add them to the user's following list. 
 
-                    console.log('this is the FriendsList.js handleSearchButtonClick axios.get request response.data: ', response.data)
                     this.setState({
                         listOfFriendsCurrentlyDisplayed: response.data
                     })
@@ -65,7 +64,6 @@ class FriendsList extends React.Component {
         axios
             .get(`/api/pages/personid/${individualFriendPersonId}`)
             .then(response => {
-                console.log('FIRST RESPONSE.data: ', response.data)
                 axios
                     .post(`/api/followinglist/userid/${this.props.match.params.personid}/friendid/${individualFriendPersonId}`, {
                         pageId: response.data.landing_page_id, 
@@ -74,7 +72,6 @@ class FriendsList extends React.Component {
                         lastname: response.data.lastname
                     })
                     .then(response => {
-                        console.log('FriendsList.js handleFollowButtonClick fn axios.post request response.data: ', response.data)
                         // this.setState({
                         //     listOfFriendsCurrentlyDisplayed: response.data
                         // })
@@ -92,7 +89,6 @@ class FriendsList extends React.Component {
     } 
 
     handleUnfollowButtonClick = (individualFriendPersonId) => {
-        console.log('Unfollow button clicked')
         // axios
         // .delete(`/api/followinglist/userid/${this.props.match.params.personid}/friendid/${individualFriendPersonId}`)
         // .then(response => {
@@ -137,22 +133,16 @@ class FriendsList extends React.Component {
                 .get(`/api/userRelationship/${this.props.user.personId}/${individualFriend.person_id}`)
                 .then(response => {
                     if (response.data === "User is not following this person") { 
-                        console.log("false: ", response.data)
                         individualFriend.isFollowing = false
-                        console.log("FALSE AND NOW: ", individualFriend)
                     } else {
-                        console.log("true: ", response.data)
                         individualFriend.isFollowing = true //if I was doing multiple pages and landing pages etc., I would need to use the response.data (the page_id and override_page_id). 
-                        console.log("TRUE AND NOW: ", individualFriend)
                     }
                 }) 
                 .catch(err => {
-                    console.log('There was an error, but this is individualFriend: ', individualFriend)
                     console.log('This is the error that came back from the FriendsList.js render method mappedListOfFriendsCurrentlyDisplayed axios.get request: ', err)
                 })
 
                 if (individualFriend.isFollowing === undefined) { 
-                    console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW individualFriend: ', individualFriend)
                     return (
                         <div
                             key={indexOfIndividualFriend}
@@ -180,7 +170,6 @@ class FriendsList extends React.Component {
                         </div>
                     )
                 } else {
-                    console.log('QOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQOQO individualFriend: ', individualFriend)
                     return (
                         <div
                             key={indexOfIndividualFriend}

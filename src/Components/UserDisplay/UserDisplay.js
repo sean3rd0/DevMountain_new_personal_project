@@ -8,7 +8,6 @@ const UserDisplay = (props) => {
             <div>
                 <img 
                     className="profile-pic" 
-                    onClick={() => {console.log('props.isFollowing: ', props.isFollowing)}}
                     src={props.profilePic}
                     alt="A beautiful person."
                 />
@@ -16,11 +15,9 @@ const UserDisplay = (props) => {
             <div>
                 <div 
                     className="UserDisplayInnerParts UsernamePartOfUserDisplay"
-                    // onClick={() => {props.handleUserDisplayClick(props.personId)}}
                 >{props.username}</div>
                 <div 
                     className="UserDisplayInnerParts"
-                    // onClick={() => {props.handleUserDisplayClick(props.personId)}}
                 >{props.firstname} {props.lastname}</div>
             </div>
         </div>

@@ -4,6 +4,7 @@ SELECT
     posts.post_id,  
     posts.post_text, 
     posts.post_photo, 
+    users.person_id,
     users.username, 
     users.firstname, 
     users.lastname, 

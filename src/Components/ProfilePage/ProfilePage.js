@@ -20,17 +20,17 @@ class ProfilePage extends React.Component {
         axios
             .get(`/api/landingpage/personid/${this.props.match.params.personid}`)
             .then(response => {
-                console.log('this is profilePage componentDidMount OUTER response.data: ', response.data)
                 this.props.updateCurrentPageOnReduxState(response.data);
                 axios
                     .get(`/api/personid/${this.props.match.params.personid}/pageid/${this.props.match.params.pageid}`)
                     .then(response => { 
-                        console.log('this is profilePage componentDidMount INNER response.data: ', response.data)
                         // if (response.data[0].post_id) {
                             this.props.updatePostsOnCurrentPageOnReduxState(response.data)
                         // }
                     })
-                    .catch(err => {console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)})
+                    .catch(err => {
+                        console.log('this is the error that came back from the ProfilePage componentDidMount INNER axios.get request: ', err)
+                    })
             })
             .catch(err => {
                 console.log('this is the error that came back from the ProfilePage componentDidMount OUTER axios.get request: ', err)
@@ -84,26 +84,25 @@ class ProfilePage extends React.Component {
 
 
     handleUserDisplayClick = (clickedPersonId) => {
-        console.log('clickedPersonId: ', clickedPersonId)
         axios
-        .get(`/api/landingpage/personid/${clickedPersonId}`)
-        .then(response => {
-            this.props.updateCurrentPageOnReduxState(response.data);
-            axios
-                .get(`/api/personid/${clickedPersonId}/pageid/${response.data.landing_page_id}`)
-                .then(response => {
-                    // if (response.data[0].post_id) {
-                        this.props.updatePostsOnCurrentPageOnReduxState(response.data)
-                    // }
-                })
-                .catch(err => {
-                    console.log('this is the error that came back from the FriendsList handleUserDIsplayClick INNER axios.get request')
-                })
-            this.props.history.push(`/${clickedPersonId}/pages/${response.data.landing_page_id}`)
-        })
-        .catch(err => {
-            console.log('This is the error that came back from the FriendsList.js handleUserDisplayClick fn OUTER axios.get request: ', err)
-        })
+            .get(`/api/landingpage/personid/${clickedPersonId}`)
+            .then(response => {
+                this.props.updateCurrentPageOnReduxState(response.data);
+                axios
+                    .get(`/api/personid/${clickedPersonId}/pageid/${response.data.landing_page_id}`)
+                    .then(response => {
+                        // if (response.data[0].post_id) {
+                            this.props.updatePostsOnCurrentPageOnReduxState(response.data)
+                        // }
+                    })
+                    .catch(err => {
+                        console.log('this is the error that came back from the FriendsList handleUserDIsplayClick INNER axios.get request')
+                    })
+                this.props.history.push(`/${clickedPersonId}/pages/${response.data.landing_page_id}`)
+            })
+            .catch(err => {
+                console.log('This is the error that came back from the FriendsList.js handleUserDisplayClick fn OUTER axios.get request: ', err)
+            })
     }
 
     render(){

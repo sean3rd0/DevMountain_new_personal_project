@@ -30,7 +30,6 @@ class Landing extends React.Component {
                 passwordInput: "", 
                 confirmPasswordInput: ""
             }) 
-            console.log('Landing.js handleCreate response.data: ', response.data)
             this.props.updateUserOnReduxState(response.data.user)
             this.props.updateCurrentPageOnReduxState(response.data.usersFirstPage)
             this.props.history.push(`/${response.data.user.person_id}/pages/${response.data.usersFirstPage.page_id}`)
@@ -48,7 +47,6 @@ class Landing extends React.Component {
     handleLogin = (username, password) => { 
         axios.post(`/api/login`, {username, password})
         .then(response => {
-            // console.log('Landing.js handleLogin axios response.data: ', response.data)
             this.setState({
                 usernameInput: "", 
                 passwordInput: "", 

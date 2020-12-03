@@ -37,7 +37,6 @@ module.exports = {
                 personId: personid, 
                 pageId: pageid
             })
-            console.log("andItsTen: ", currentPageAndItsTenMostRecentPosts)
             res.status(200).send(currentPageAndItsTenMostRecentPosts)
         }
         
@@ -46,11 +45,9 @@ module.exports = {
     getLandingPageInfo: async (req, res) => {
         const db = req.app.get('db') 
         const {personid} = req.params 
-        console.log('personid: ', personid)
 
         let landingPageIdAndProfilePic = await db.get_landing_page_id_and_profile_pic({personId: personid}) 
-        landingPageIdAndProfilePic = landingPageIdAndProfilePic[0]
-        console.log('this is landingPageIdAndProfiePic, which has a lot of stuff: ', landingPageIdAndProfilePic)
+        landingPageIdAndProfilePic = landingPageIdAndProfilePic[0] 
         
         res.status(200).send(landingPageIdAndProfilePic)
     },
@@ -66,7 +63,6 @@ module.exports = {
         displayFriends: async (req, res) => {
             const db = req.app.get('db')
             const {searchParameterFromInput} = req.params 
-            console.log('this is searchParameterFromInput: ', searchParameterFromInput)
         
         if (searchParameterFromInput === undefined) {
             let firstTenResultsOfFriends = await db.get_first_ten_friends({searchParameterFromInput: "%"})
@@ -96,12 +92,10 @@ module.exports = {
         isTheCurrentUserFollowingThisPerson = await db.is_the_current_user_following_this_person({userPersonId: userPersonId, individualFriendPersonId: individualFriendPersonId})
         isTheCurrentUserFollowingThisPerson = isTheCurrentUserFollowingThisPerson[0] 
 
-        console.log('THIS IS isTheCurrentUserFollowingThisPerson: ', isTheCurrentUserFollowingThisPerson)
         if(isTheCurrentUserFollowingThisPerson){
             res.status(200).send(isTheCurrentUserFollowingThisPerson)
         } else {
             isTheCurrentUserFollowingThisPerson = "User is not following this person"
-            console.log('THIS IS isTheCurrentUserFollowingThisPerson: ', isTheCurrentUserFollowingThisPerson)
             res.status(200).send(isTheCurrentUserFollowingThisPerson)
         }
     }, 
@@ -110,7 +104,6 @@ module.exports = {
         const db = req.app.get('db')
 
         let tenMostRecentFeedPosts = await db.get_ten_most_recent_feed_posts() 
-        console.log('this is tenMostRecentFeedPosts: ', tenMostRecentFeedPosts)
 
         res.status(200).send(tenMostRecentFeedPosts)
     }, 
@@ -123,7 +116,6 @@ module.exports = {
 
         let personsPageIdAndNames = await db.get_persons_page_id_and_names({personId})
         personsPageIdAndNames = personsPageIdAndNames[0] 
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA sending back: ', personsPageIdAndNames)
 
         res.status(200).send(personsPageIdAndNames) 
     },
