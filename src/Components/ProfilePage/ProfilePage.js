@@ -46,39 +46,41 @@ class ProfilePage extends React.Component {
 
     handlePostSubmit = (postText, photoURL) => { 
         if (!photoURL) {
-            axios.post(`/api/posts`, {
-                personId: this.props.user.personId, 
-                pageId: this.props.match.params.pageid, 
-                postText
-            })
-            .then(response => {
-                this.props.addNewPost({
-                    personId: response.data.personId, 
-                    pageId: response.data.pageId, 
-                    postText: response.data.postText
+            axios
+                .post(`/api/posts`, {
+                    personId: this.props.user.personId, 
+                    pageId: this.props.match.params.pageid, 
+                    postText
                 })
-            })
-            .catch(err => {
-                console.log('this is the error that came from the axios.post request in the handlePostSubmit function on ProfilePage.js: ', err)
-            })
+                .then(response => {
+                    this.props.addNewPost({
+                        personId: response.data.personId, 
+                        pageId: response.data.pageId, 
+                        postText: response.data.postText
+                    })
+                })
+                .catch(err => {
+                    console.log('this is the error that came from the axios.post request in the handlePostSubmit function on ProfilePage.js: ', err)
+                })
         } else {
-            axios.post(`/api/posts`, {
-                personId: this.props.user.personId, 
-                pageId: this.props.match.params.pageid, 
-                postText, 
-                postPhoto: photoURL
-            })
-            .then(response => {
-                this.props.addNewPost({
-                    personId: response.data.personId, 
-                    pageId: response.data.pageId, 
-                    postText: response.data.postText, 
-                    postPhoto: response.data.postPhoto
+            axios
+                .post(`/api/posts`, {
+                    personId: this.props.user.personId, 
+                    pageId: this.props.match.params.pageid, 
+                    postText, 
+                    postPhoto: photoURL
                 })
-            })
-            .catch(err => {
-                console.log('this is the error that came from the axios.post request in the handlePostSubmit function on ProfilePage.js: ', err)
-            })
+                .then(response => {
+                    this.props.addNewPost({
+                        personId: response.data.personId, 
+                        pageId: response.data.pageId, 
+                        postText: response.data.postText, 
+                        postPhoto: response.data.postPhoto
+                    })
+                })
+                .catch(err => {
+                    console.log('this is the error that came from the axios.post request in the handlePostSubmit function on ProfilePage.js: ', err)
+                })
         }
     }
 
