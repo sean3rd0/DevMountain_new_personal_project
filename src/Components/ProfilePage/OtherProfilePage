@@ -215,4 +215,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
                     })
                 .catch(err => {
                     console.log("this is the err from the render method posts axios.get requests: ", err)
-                })
+                }) 
+
+
+                hello
